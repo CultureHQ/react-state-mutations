@@ -1,6 +1,6 @@
 {
   "name": "react-state-mutations",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Modify component state without race conditions",
   "main": "dist/main.js",
   "scripts": {
