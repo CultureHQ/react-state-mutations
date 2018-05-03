@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CultureHQ/react-state-mutations.git"
+    "url": "git+https://github.com/kddeisz/react-state-mutations.git"
   },
   "author": "Kevin Deisz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/CultureHQ/react-state-mutations/issues"
+    "url": "https://github.com/kddeisz/react-state-mutations/issues"
   },
-  "homepage": "https://github.com/CultureHQ/react-state-mutations#readme",
+  "homepage": "https://github.com/kddeisz/react-state-mutations#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
