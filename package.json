@@ -1,0 +1,31 @@
+{
+  "name": "react-state-mutations",
+  "version": "0.0.1",
+  "description": "Modify component state without race conditions",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "yarn babel --out-file dist/main.js src",
+    "test": "jest",
+    "cleanup": "yarn prettier --write '**/*.{js,json}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CultureHQ/react-state-mutations.git"
+  },
+  "author": "Kevin Deisz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CultureHQ/react-state-mutations/issues"
+  },
+  "homepage": "https://github.com/CultureHQ/react-state-mutations#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "jest": "^22.4.3",
+    "packfiles": "^0.0.2",
+    "prettier": "^1.12.1"
+  }
+}
