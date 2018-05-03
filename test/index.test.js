@@ -174,3 +174,13 @@ test("combineMutations with plain objects with all standalones", () => {
     c: "c"
   });
 });
+
+test("combineMutations with arguments works when called multiple times", () => {
+  const mutation = combineMutations(append("appendable"), { a: "b" })(1);
+
+  const prevState = { appendable: [1], a: "a" };
+  const nextState = mutation(prevState);
+
+  expect(nextState).toEqual({ appendable: [1, 1], a: "b" });
+  expect(mutation(nextState)).toEqual({ appendable: [1, 1, 1], a: "b" });
+});

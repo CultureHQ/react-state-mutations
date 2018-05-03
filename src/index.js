@@ -172,10 +172,18 @@ export const combineMutations = (...mutations) => {
   });
 
   if (normalized.some(mutation => !mutation.standalone)) {
-    return (...args) => state => normalized.reduce((nextState, mutation) => ({
-      ...nextState,
-      ...(mutation.standalone ? mutation(nextState) : mutation(args.shift())(nextState))
-    }), state);
+    return (...args) => state => {
+      let argIndex = -1;
+
+      return normalized.reduce((nextState, mutation) => {
+        if (mutation.standalone) {
+          return { ...nextState, ...mutation(nextState) };
+        }
+
+        argIndex += 1;
+        return { ...nextState, ...mutation(args[argIndex])(nextState) };
+      }, state);
+    };
   }
 
   return state => normalized.reduce((nextState, mutation) => ({
