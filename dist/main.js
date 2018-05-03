@@ -1,3 +1,15 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /**
  * Creates a mutation that modifies state. Takes as an argument a function that
  * accepts a value and returns the modified value. As in the example:
@@ -10,10 +22,14 @@
  *     const nextState = mutation(prevState);
  *     // => { addable: 15 }
  */
-export const makeStandaloneMutation = apply => field => {
-  const mutation = state => ({ [field]: apply(state[field]) });
-  mutation.standalone = true;
-  return mutation;
+var makeStandaloneMutation = exports.makeStandaloneMutation = function makeStandaloneMutation(apply) {
+  return function (field) {
+    var mutation = function mutation(state) {
+      return _defineProperty({}, field, apply(state[field]));
+    };
+    mutation.standalone = true;
+    return mutation;
+  };
 };
 
 /**
@@ -30,9 +46,15 @@ export const makeStandaloneMutation = apply => field => {
  *     const nextState = mutation(10)(prevState);
  *     // => { addable: 15 }
  */
-export const makeArgumentMutation = apply => field => object => state => ({
-  [field]: apply(state[field], object)
-});
+var makeArgumentMutation = exports.makeArgumentMutation = function makeArgumentMutation(apply) {
+  return function (field) {
+    return function (object) {
+      return function (state) {
+        return _defineProperty({}, field, apply(state[field], object));
+      };
+    };
+  };
+};
 
 /**
  * Appends a value to a list.
@@ -44,10 +66,9 @@ export const makeArgumentMutation = apply => field => object => state => ({
  *     const nextState = mutation(4)(prevState);
  *     // => { appendable: [1, 2, 3, 4] }
  */
-export const append = makeArgumentMutation((value, object) => [
-  ...value,
-  object
-]);
+var append = exports.append = makeArgumentMutation(function (value, object) {
+  return [].concat(_toConsumableArray(value), [object]);
+});
 
 /**
  * Decrements a value.
@@ -59,7 +80,9 @@ export const append = makeArgumentMutation((value, object) => [
  *     const nextState = mutation(prevState);
  *     // => { decrementable: 0 }
  */
-export const decrement = makeStandaloneMutation(value => value - 1);
+var decrement = exports.decrement = makeStandaloneMutation(function (value) {
+  return value - 1;
+});
 
 /**
  * Increments a value.
@@ -71,7 +94,9 @@ export const decrement = makeStandaloneMutation(value => value - 1);
  *     const nextState = mutation(prevState);
  *     // => { incrementable: 2 }
  */
-export const increment = makeStandaloneMutation(value => value + 1);
+var increment = exports.increment = makeStandaloneMutation(function (value) {
+  return value + 1;
+});
 
 /**
  * Mutates a value.
@@ -83,10 +108,9 @@ export const increment = makeStandaloneMutation(value => value + 1);
  *     const nextState = mutation({ foo: "baz" })(prevState);
  *     // => { mutatable: { foo: "baz" } }
  */
-export const mutate = makeArgumentMutation((value, object) => ({
-  ...value,
-  ...object
-}));
+var mutate = exports.mutate = makeArgumentMutation(function (value, object) {
+  return _extends({}, value, object);
+});
 
 /**
  * Prepends a value to a list.
@@ -98,10 +122,9 @@ export const mutate = makeArgumentMutation((value, object) => ({
  *     const nextState = mutation(0)(prevState);
  *     // => { prependable: [0, 1, 2, 3] }
  */
-export const prepend = makeArgumentMutation((value, object) => [
-  object,
-  ...value
-]);
+var prepend = exports.prepend = makeArgumentMutation(function (value, object) {
+  return [object].concat(_toConsumableArray(value));
+});
 
 /**
  * Toggles a boolean value.
@@ -113,7 +136,9 @@ export const prepend = makeArgumentMutation((value, object) => [
  *     const nextState = mutation(prevState);
  *     // => { toggleable: false }
  */
-export const toggle = makeStandaloneMutation(value => !value);
+var toggle = exports.toggle = makeStandaloneMutation(function (value) {
+  return !value;
+});
 
 /**
  * Combines multiple mutations into a single mutation function. Takes any number
@@ -160,26 +185,42 @@ export const toggle = makeStandaloneMutation(value => !value);
  *     const nextState = mutation(prevState);
  *     // => { toggleable: false, a: "b" };
  */
-export const combineMutations = (...mutations) => {
-  const normalized = mutations.map(mutation => {
+var combineMutations = exports.combineMutations = function combineMutations() {
+  for (var _len = arguments.length, mutations = Array(_len), _key = 0; _key < _len; _key++) {
+    mutations[_key] = arguments[_key];
+  }
+
+  var normalized = mutations.map(function (mutation) {
     if (typeof mutation === "function") {
       return mutation;
     }
 
-    const directMutation = () => mutation;
+    var directMutation = function directMutation() {
+      return mutation;
+    };
     directMutation.standalone = true;
     return directMutation;
   });
 
-  if (normalized.some(mutation => !mutation.standalone)) {
-    return (...args) => state => normalized.reduce((nextState, mutation) => ({
-      ...nextState,
-      ...(mutation.standalone ? mutation(nextState) : mutation(args.shift())(nextState))
-    }), state);
+  if (normalized.some(function (mutation) {
+    return !mutation.standalone;
+  })) {
+    return function () {
+      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+
+      return function (state) {
+        return normalized.reduce(function (nextState, mutation) {
+          return _extends({}, nextState, mutation.standalone ? mutation(nextState) : mutation(args.shift())(nextState));
+        }, state);
+      };
+    };
   }
 
-  return state => normalized.reduce((nextState, mutation) => ({
-    ...nextState,
-    ...mutation(nextState)
-  }), state);
+  return function (state) {
+    return normalized.reduce(function (nextState, mutation) {
+      return _extends({}, nextState, mutation(nextState));
+    }, state);
+  };
 };

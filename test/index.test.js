@@ -1,13 +1,13 @@
 import {
   makeStandaloneMutation,
   makeArgumentMutation,
-  combineMutations,
   append,
   decrement,
   increment,
   mutate,
   prepend,
-  toggle
+  toggle,
+  combineMutations
 } from "../src/index";
 
 test("makeStandaloneMutation", () => {
@@ -74,4 +74,103 @@ test("toggle", () => {
 
   expect(nextState.object).toBe(false);
   expect(prevState.object).toBe(true);
+});
+
+test("combineMutations", () => {
+  const mutation = combineMutations(
+    append("appendable"),
+    decrement("decrementable"),
+    increment("incrementable"),
+    mutate("mutatable"),
+    prepend("prependable"),
+    toggle("toggleable")
+  );
+
+  const prevState = {
+    appendable: [1, 2, 3],
+    decrementable: 1,
+    incrementable: 1,
+    mutatable: { a: "b" },
+    prependable: [1, 2, 3],
+    toggleable: true
+  };
+
+  expect(mutation(4, { a: "c" }, 0)(prevState)).toEqual({
+    appendable: [1, 2, 3, 4],
+    decrementable: 0,
+    incrementable: 2,
+    mutatable: { a: "c" },
+    prependable: [0, 1, 2, 3],
+    toggleable: false
+  });
+});
+
+test("combineMutations with all standalones", () => {
+  const mutation = combineMutations(
+    decrement("decrementable"),
+    increment("incrementable"),
+    toggle("toggleable")
+  );
+
+  const prevState = {
+    decrementable: 1,
+    incrementable: 1,
+    toggleable: true
+  };
+
+  expect(mutation(prevState)).toEqual({
+    decrementable: 0,
+    incrementable: 2,
+    toggleable: false
+  });
+});
+
+test("combineMutations with plain objects", () => {
+  const mutation = combineMutations(
+    append("appendable"),
+    { a: "a" },
+    toggle("toggleable"),
+    { b: "b", c: "c" }
+  );
+
+  const prevState = {
+    appendable: [1, 2, 3],
+    a: "b",
+    toggleable: true,
+    b: "c",
+    c: "d"
+  };
+
+  expect(mutation(4)(prevState)).toEqual({
+    appendable: [1, 2, 3, 4],
+    a: "a",
+    toggleable: false,
+    b: "b",
+    c: "c"
+  });
+});
+
+test("combineMutations with plain objects with all standalones", () => {
+  const mutation = combineMutations(
+    increment("incrementable"),
+    { a: "a" },
+    toggle("toggleable"),
+    { b: "b", c: "c" }
+  );
+
+  const prevState = {
+    incrementable: 1,
+    a: "b",
+    toggleable: true,
+    b: "c",
+    c: "d"
+  };
+
+  expect(mutation(prevState)).toEqual({
+    incrementable: 2,
+    a: "a",
+    toggleable: false,
+    b: "b",
+    c: "c"
+  });
 });
