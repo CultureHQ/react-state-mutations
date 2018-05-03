@@ -211,8 +211,15 @@ var combineMutations = exports.combineMutations = function combineMutations() {
       }
 
       return function (state) {
+        var argIndex = -1;
+
         return normalized.reduce(function (nextState, mutation) {
-          return _extends({}, nextState, mutation.standalone ? mutation(nextState) : mutation(args.shift())(nextState));
+          if (mutation.standalone) {
+            return _extends({}, nextState, mutation(nextState));
+          }
+
+          argIndex += 1;
+          return _extends({}, nextState, mutation(args[argIndex])(nextState));
         }, state);
       };
     };
