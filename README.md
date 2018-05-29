@@ -18,17 +18,14 @@ You can now import the mutations that you need into your component, as in the ex
 import React, { Component } from "react";
 import { increment } from "react-state-mutations";
 
-const incrementer = increment("count");
-
 class Example extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { count: 0 };
-  }
+  state = { count: 0 };
 
   handleClick() {
-    this.setState(incrementer);
+    this.setState(this.incrementCount);
   }
+
+  incrementCount = increment("count");
 
   render() {
     const { count } = this.state;
