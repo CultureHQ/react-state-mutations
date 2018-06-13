@@ -1,6 +1,6 @@
 # react-state-mutations
 
-[![Build Status](https://travis-ci.org/kddeisz/react-state-mutations.svg?branch=master)](https://travis-ci.org/kddeisz/react-state-mutations)
+[![Build Status](https://travis-ci.org/CultureHQ/react-state-mutations.svg?branch=master)](https://travis-ci.org/CultureHQ/react-state-mutations)
 
 Modify component state without race conditions.
 
