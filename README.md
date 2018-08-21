@@ -1,6 +1,8 @@
 # react-state-mutations
 
-[![Build Status](https://travis-ci.org/CultureHQ/react-state-mutations.svg?branch=master)](https://travis-ci.org/CultureHQ/react-state-mutations)
+[![Build Status](https://travis-ci.com/CultureHQ/react-state-mutations.svg?branch=master)](https://travis-ci.com/CultureHQ/react-state-mutations)
+[![Package Version](https://img.shields.io/npm/v/react-state-mutations.svg)](https://www.npmjs.com/package/react-state-mutations)
+[![Minified GZipped Size](https://img.shields.io/bundlephobia/minzip/react-state-mutations.svg)](https://www.npmjs.com/package/react-state-mutations)
 
 Modify component state without race conditions.
 
