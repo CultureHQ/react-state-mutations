@@ -3,10 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.increment = exports.decrement = exports.append = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -22,16 +29,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  *     const nextState = mutation(prevState);
  *     // => { addable: 15 }
  */
-var makeStandaloneMutation = exports.makeStandaloneMutation = function makeStandaloneMutation(apply) {
+var makeStandaloneMutation = function makeStandaloneMutation(apply) {
   return function (field) {
     var mutation = function mutation(state) {
       return _defineProperty({}, field, apply(state[field]));
     };
+
     mutation.standalone = true;
     return mutation;
   };
 };
-
 /**
  * Creates a mutation that is a function that takes one argument, that itself
  * returns a function that modifies state. Takes as an argument a function that
@@ -46,7 +53,11 @@ var makeStandaloneMutation = exports.makeStandaloneMutation = function makeStand
  *     const nextState = mutation(10)(prevState);
  *     // => { addable: 15 }
  */
-var makeArgumentMutation = exports.makeArgumentMutation = function makeArgumentMutation(apply) {
+
+
+exports.makeStandaloneMutation = makeStandaloneMutation;
+
+var makeArgumentMutation = function makeArgumentMutation(apply) {
   return function (field) {
     return function (object) {
       return function (state) {
@@ -55,7 +66,6 @@ var makeArgumentMutation = exports.makeArgumentMutation = function makeArgumentM
     };
   };
 };
-
 /**
  * Appends a value to a list.
  *
@@ -66,10 +76,12 @@ var makeArgumentMutation = exports.makeArgumentMutation = function makeArgumentM
  *     const nextState = mutation(4)(prevState);
  *     // => { appendable: [1, 2, 3, 4] }
  */
-var append = exports.append = makeArgumentMutation(function (value, object) {
-  return [].concat(_toConsumableArray(value), [object]);
-});
 
+
+exports.makeArgumentMutation = makeArgumentMutation;
+var append = makeArgumentMutation(function (value, object) {
+  return _toConsumableArray(value).concat([object]);
+});
 /**
  * Decrements a value.
  *
@@ -80,10 +92,11 @@ var append = exports.append = makeArgumentMutation(function (value, object) {
  *     const nextState = mutation(prevState);
  *     // => { decrementable: 0 }
  */
-var decrement = exports.decrement = makeStandaloneMutation(function (value) {
+
+exports.append = append;
+var decrement = makeStandaloneMutation(function (value) {
   return value - 1;
 });
-
 /**
  * Increments a value.
  *
@@ -94,10 +107,11 @@ var decrement = exports.decrement = makeStandaloneMutation(function (value) {
  *     const nextState = mutation(prevState);
  *     // => { incrementable: 2 }
  */
-var increment = exports.increment = makeStandaloneMutation(function (value) {
+
+exports.decrement = decrement;
+var increment = makeStandaloneMutation(function (value) {
   return value + 1;
 });
-
 /**
  * Mutates a value.
  *
@@ -108,10 +122,11 @@ var increment = exports.increment = makeStandaloneMutation(function (value) {
  *     const nextState = mutation({ foo: "baz" })(prevState);
  *     // => { mutatable: { foo: "baz" } }
  */
-var mutate = exports.mutate = makeArgumentMutation(function (value, object) {
-  return _extends({}, value, object);
-});
 
+exports.increment = increment;
+var mutate = makeArgumentMutation(function (value, object) {
+  return _objectSpread({}, value, object);
+});
 /**
  * Prepends a value to a list.
  *
@@ -122,10 +137,11 @@ var mutate = exports.mutate = makeArgumentMutation(function (value, object) {
  *     const nextState = mutation(0)(prevState);
  *     // => { prependable: [0, 1, 2, 3] }
  */
-var prepend = exports.prepend = makeArgumentMutation(function (value, object) {
+
+exports.mutate = mutate;
+var prepend = makeArgumentMutation(function (value, object) {
   return [object].concat(_toConsumableArray(value));
 });
-
 /**
  * Toggles a boolean value.
  *
@@ -136,10 +152,11 @@ var prepend = exports.prepend = makeArgumentMutation(function (value, object) {
  *     const nextState = mutation(prevState);
  *     // => { toggleable: false }
  */
-var toggle = exports.toggle = makeStandaloneMutation(function (value) {
+
+exports.prepend = prepend;
+var toggle = makeStandaloneMutation(function (value) {
   return !value;
 });
-
 /**
  * Combines multiple mutations into a single mutation function. Takes any number
  * of arguments and returns a singular mutation created out of the combination
@@ -185,8 +202,11 @@ var toggle = exports.toggle = makeStandaloneMutation(function (value) {
  *     const nextState = mutation(prevState);
  *     // => { toggleable: false, a: "b" };
  */
-var combineMutations = exports.combineMutations = function combineMutations() {
-  for (var _len = arguments.length, mutations = Array(_len), _key = 0; _key < _len; _key++) {
+
+exports.toggle = toggle;
+
+var combineMutations = function combineMutations() {
+  for (var _len = arguments.length, mutations = new Array(_len), _key = 0; _key < _len; _key++) {
     mutations[_key] = arguments[_key];
   }
 
@@ -198,6 +218,7 @@ var combineMutations = exports.combineMutations = function combineMutations() {
     var directMutation = function directMutation() {
       return mutation;
     };
+
     directMutation.standalone = true;
     return directMutation;
   });
@@ -206,20 +227,19 @@ var combineMutations = exports.combineMutations = function combineMutations() {
     return !mutation.standalone;
   })) {
     return function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
 
       return function (state) {
         var argIndex = -1;
-
         return normalized.reduce(function (nextState, mutation) {
           if (mutation.standalone) {
-            return _extends({}, nextState, mutation(nextState));
+            return _objectSpread({}, nextState, mutation(nextState));
           }
 
           argIndex += 1;
-          return _extends({}, nextState, mutation(args[argIndex])(nextState));
+          return _objectSpread({}, nextState, mutation(args[argIndex])(nextState));
         }, state);
       };
     };
@@ -227,7 +247,9 @@ var combineMutations = exports.combineMutations = function combineMutations() {
 
   return function (state) {
     return normalized.reduce(function (nextState, mutation) {
-      return _extends({}, nextState, mutation(nextState));
+      return _objectSpread({}, nextState, mutation(nextState));
     }, state);
   };
 };
+
+exports.combineMutations = combineMutations;
