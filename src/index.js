@@ -62,6 +62,20 @@ export const append = makeArgumentMutation((value, object) => [
 export const decrement = makeStandaloneMutation(value => value - 1);
 
 /**
+ * Filters a list.
+ *
+ *     import { filter } from "react-state-mutations";
+ *     const mutation = filter("filterable", );
+ *
+ *     const prevState = { filterable: [1, 2, 3, 4, 5, 6] };
+ *     const nextState = mutation(value => value % 2 === 0);
+ *     // => { filterable: [2, 4, 6] }
+ */
+export const filter = makeArgumentMutation((value, callback) => (
+  value.filter(callback)
+));
+
+/**
  * Increments a value.
  *
  *     import { increment } from "react-state-mutations";

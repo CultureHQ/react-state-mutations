@@ -3,6 +3,7 @@ import {
   makeArgumentMutation,
   append,
   decrement,
+  filter,
   increment,
   mutate,
   prepend,
@@ -42,6 +43,14 @@ test("decrement", () => {
 
   expect(nextState.object).toEqual(0);
   expect(prevState.object).toEqual(1);
+});
+
+test("filter", () => {
+  const prevState = { objects: [1, 2, 3, 4, 5, 6] };
+  const nextState = filter("objects")(value => value % 2 === 0)(prevState);
+
+  expect(nextState.objects).toEqual([2, 4, 6]);
+  expect(prevState.objects).toEqual([1, 2, 3, 4, 5, 6]);
 });
 
 test("increment", () => {
