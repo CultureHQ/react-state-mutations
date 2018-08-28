@@ -66,6 +66,19 @@ const nextState = mutation(prevState);
 // => { decrementable: 0 }
 ```
 
+### `filter`
+
+Filters a list, as in the example:
+
+```javascript
+import { filter } from "react-state-mutations";
+const mutation = filter("filterable", );
+
+const prevState = { filterable: [1, 2, 3, 4, 5, 6] };
+const nextState = mutation(value => value % 2 === 0);
+// => { filterable: [2, 4, 6] }
+```
+
 ### `increment`
 
 Increments a value, as in the example:
