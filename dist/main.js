@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.increment = exports.decrement = exports.append = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
+exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.increment = exports.filter = exports.decrement = exports.append = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -98,6 +98,21 @@ var decrement = makeStandaloneMutation(function (value) {
   return value - 1;
 });
 /**
+ * Filters a list.
+ *
+ *     import { filter } from "react-state-mutations";
+ *     const mutation = filter("filterable", );
+ *
+ *     const prevState = { filterable: [1, 2, 3, 4, 5, 6] };
+ *     const nextState = mutation(value => value % 2 === 0);
+ *     // => { filterable: [2, 4, 6] }
+ */
+
+exports.decrement = decrement;
+var filter = makeArgumentMutation(function (value, callback) {
+  return value.filter(callback);
+});
+/**
  * Increments a value.
  *
  *     import { increment } from "react-state-mutations";
@@ -108,7 +123,7 @@ var decrement = makeStandaloneMutation(function (value) {
  *     // => { incrementable: 2 }
  */
 
-exports.decrement = decrement;
+exports.filter = filter;
 var increment = makeStandaloneMutation(function (value) {
   return value + 1;
 });
