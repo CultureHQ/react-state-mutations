@@ -21,13 +21,13 @@ import React, { Component } from "react";
 import { increment } from "react-state-mutations";
 
 class Example extends Component {
+  incrementCount = increment("count");
+
   state = { count: 0 };
 
   handleClick() {
     this.setState(this.incrementCount);
   }
-
-  incrementCount = increment("count");
 
   render() {
     const { count } = this.state;
@@ -46,11 +46,11 @@ Appends a value to a list, as in the example:
 
 ```javascript
 import { append } from "react-state-mutations";
-const mutation = append("appendable");
+const mutation = append("list");
 
-const prevState = { appendable: [1, 2, 3] };
+const prevState = { list: [1, 2, 3] };
 const nextState = mutation(4)(prevState);
-// => { appendable: [1, 2, 3, 4] }
+// => { list: [1, 2, 3, 4] }
 ```
 
 ### `decrement`
@@ -59,11 +59,11 @@ Decrements a value, as in the example:
 
 ```javascript
 import { decrement } from "react-state-mutations";
-const mutation = decrement("decrementable");
+const mutation = decrement("count");
 
-const prevState = { decrementable: 1 };
+const prevState = { count: 1 };
 const nextState = mutation(prevState);
-// => { decrementable: 0 }
+// => { count: 0 }
 ```
 
 ### `filter`
@@ -72,11 +72,11 @@ Filters a list, as in the example:
 
 ```javascript
 import { filter } from "react-state-mutations";
-const mutation = filter("filterable", );
+const mutation = filter("list");
 
-const prevState = { filterable: [1, 2, 3, 4, 5, 6] };
+const prevState = { list: [1, 2, 3, 4, 5, 6] };
 const nextState = mutation(value => value % 2 === 0);
-// => { filterable: [2, 4, 6] }
+// => { list: [2, 4, 6] }
 ```
 
 ### `increment`
@@ -85,11 +85,24 @@ Increments a value, as in the example:
 
 ```javascript
 import { increment } from "react-state-mutations";
-const mutation = increment("incrementable");
+const mutation = increment("count");
 
-const prevState = { incrementable: 1 };
+const prevState = { count: 1 };
 const nextState = mutation(prevState);
-// => { incrementable: 2 }
+// => { count: 2 }
+```
+
+### `map`
+
+Maps over a list, as in the example:
+
+```javascript
+import { map } from "react-state-mutations";
+const mutation = map("list");
+
+const prevState = { list: [1, 2, 3] };
+const nextState = mutation(value => value * 2);
+// => { list: [2, 4, 6] }
 ```
 
 ### `mutate`
@@ -98,11 +111,11 @@ Mutates a value, as in the example:
 
 ```javascript
 import { mutate } from "react-state-mutations";
-const mutation = mutate("mutatable");
+const mutation = mutate("object");
 
-const prevState = { mutatable: { foo: "bar" } };
+const prevState = { object: { foo: "bar" } };
 const nextState = mutation({ foo: "baz" })(prevState);
-// => { mutatable: { foo: "baz" } }
+// => { object: { foo: "baz" } }
 ```
 
 ### `prepend`
@@ -111,11 +124,11 @@ Prepends a value to a list, as in the example:
 
 ```javascript
 import { prepend } from "react-state-mutations";
-const mutation = mutate("prependable");
+const mutation = mutate("list");
 
-const prevState = { prependable: [1, 2, 3] };
+const prevState = { list: [1, 2, 3] };
 const nextState = mutation(0)(prevState);
-// => { prependable: [0, 1, 2, 3] }
+// => { list: [0, 1, 2, 3] }
 ```
 
 ### `toggle`
@@ -124,11 +137,11 @@ Toggles a boolean value, as in the example:
 
 ```javascript
 import { toggle } from "react-state-mutations";
-const mutation = toggle("toggleable");
+const mutation = toggle("boolean");
 
-const prevState = { toggleable: true };
+const prevState = { boolean: true };
 const nextState = mutation(prevState);
-// => { toggleable: false }
+// => { boolean: false }
 ```
 
 ## Advanced
@@ -142,11 +155,11 @@ Creates a mutation that modifies state. Takes as an argument a function that acc
 ```javascript
 import { makeStandaloneMutation } from "react-state-mutations";
 const add = makeStandaloneMutation(value => value + 10);
-const mutation = add("addable");
+const mutation = add("count");
 
-const prevState = { addable: 5 };
+const prevState = { count: 5 };
 const nextState = mutation(prevState);
-// => { addable: 15 }
+// => { count: 15 }
 ```
 
 ### `makeArgumentMutation`
@@ -156,11 +169,11 @@ Creates a mutation that is a function that takes one argument, that itself retur
 ```javascript
 import { makeArgumentMutation } from "react-state-mutations";
 const add = makeArgumentMutation((value, adder) => value + adder);
-const mutation = add("addable");
+const mutation = add("count");
 
-const prevState = { addable: 5 };
+const prevState = { count: 5 };
 const nextState = mutation(10)(prevState);
-// => { addable: 15 }
+// => { count: 15 }
 ```
 
 ### `combineMutations`
@@ -185,13 +198,13 @@ the state. As in the example:
 ```javascript
 import { toggle, increment } from "react-state-mutations";
 const mutation = combineMutations(
-  toggle("toggleable"),
-  increment("incrementable")
+  toggle("boolean"),
+  increment("count")
 );
 
-const prevState = { toggleable: true, incrementable: 1 };
+const prevState = { boolean: true, count: 1 };
 const nextState = mutation(prevState);
-// => { toggleable: false, incrementable: 2 };
+// => { boolean: false, count: 2 };
 ```
 
 You can additionally pass plain objects into `combineMutations` that are
@@ -201,9 +214,9 @@ arguments. As in the example:
 
 ```javascript
 import { toggle } from "react-state-mutations";
-const mutation = combineMutations(toggle("toggleable"), { a: "b" });
+const mutation = combineMutations(toggle("boolean"), { a: "b" });
 
-const prevState = { toggleable: true, a: "a" };
+const prevState = { boolean: true, a: "a" };
 const nextState = mutation(prevState);
-// => { toggleable: false, a: "b" };
+// => { boolean: false, a: "b" };
 ```

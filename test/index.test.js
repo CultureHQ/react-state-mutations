@@ -5,6 +5,7 @@ import {
   decrement,
   filter,
   increment,
+  map,
   mutate,
   prepend,
   toggle,
@@ -59,6 +60,14 @@ test("increment", () => {
 
   expect(nextState.object).toEqual(2);
   expect(prevState.object).toEqual(1);
+});
+
+test("map", () => {
+  const prevState = { objects: [1, 2, 3] };
+  const nextState = map("objects")(value => value * 2)(prevState);
+
+  expect(nextState.objects).toEqual([2, 4, 6]);
+  expect(prevState.objects).toEqual([1, 2, 3]);
 });
 
 test("mutate", () => {
