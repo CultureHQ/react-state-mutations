@@ -85,7 +85,7 @@ class Counter extends Component {
 
 ## Getting started
 
-Install this package through npm (`npm install react-state-mutations --save`) or `yarn` (`yarn add react-state-mutations`). You can then import and use the mutations from within your components.
+Install this package through `npm` (`npm install react-state-mutations --save`) or `yarn` (`yarn add react-state-mutations`). You can then import and use the mutations from within your components.
 
 ## Pre-built mutations
 
