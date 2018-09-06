@@ -106,11 +106,12 @@ Appends a value to a list, as in the example:
 
 ```javascript
 import { append } from "react-state-mutations";
-const mutation = append("list");
 
-const prevState = { list: [1, 2, 3] };
-const nextState = mutation(4)(prevState);
-// => { list: [1, 2, 3, 4] }
+const appendStudent = append("students");
+
+const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
+const nextState = appendStudent({ name: "Ron" })(prevState);
+// => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }] }
 ```
 
 ### `cycle`
@@ -120,17 +121,23 @@ Cycles through a list of values, as in the example:
 ```javascript
 import { cycle } from "react-state-mutations";
 
-const mutation = cycle("value")(["alpha", "beta", "gamma"]);
-const prevState = { value: "alpha" };
+const cycleHouse = cycle("house");
+const visitNextHogwartsHouse = cycleHouse([
+  "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+]);
 
-let nextState = mutation(prevState);
-// => { value: "beta" }
+const prevState = { house: "Gryffindor" };
+let nextState = visitNextHogwartsHouse(prevState);
+// => { house: "Hufflepuff" }
 
-nextState = mutation(nextState);
-// => { value: "gamma" }
+nextState = visitNextHogwartsHouse(nextState);
+// => { house: "Ravenclaw" }
 
-nextState = mutation(nextState);
-// => { value: "alpha" }
+nextState = visitNextHogwartsHouse(nextState);
+// => { house: "Slytherin" }
+
+nextState = visitNextHogwartsHouse(nextState);
+// => { house: "Gryffindor" }
 ```
 
 ### `decrement`
@@ -139,11 +146,12 @@ Decrements a value, as in the example:
 
 ```javascript
 import { decrement } from "react-state-mutations";
-const mutation = decrement("count");
 
-const prevState = { count: 1 };
-const nextState = mutation(prevState);
-// => { count: 0 }
+const destroyHorcrux = decrement("horcruxes");
+
+const prevState = { horcruxes: 7 };
+const nextState = destroyHorcrux(prevState);
+// => { count: 6 }
 ```
 
 ### `direct`
@@ -152,11 +160,13 @@ Directly modifies a value. This is mainly valuable when used with `combineMutati
 
 ```javascript
 import { direct, toggle, combineMutations } from "react-state-mutations";
-const mutation = combineMutations(direct("object"), toggle("boolean"));
 
-const prevState = { object: 5, boolean: true };
-const nextState = mutation(10)(prevState);
-// => { object: 10, boolean: false }
+const getCake = direct("cake");
+const becomeAWizard = combineMutations(toggle("wizard"), getCake);
+
+const prevState = { wizard: false, cake: null };
+const nextState = becomeAWizard("chocolate")(prevState);
+// => { wizard: true, cake: "chocolate" }
 ```
 
 ### `filter`
@@ -165,11 +175,20 @@ Filters a list, as in the example:
 
 ```javascript
 import { filter } from "react-state-mutations";
-const mutation = filter("list");
 
-const prevState = { list: [1, 2, 3, 4, 5, 6] };
-const nextState = mutation(value => value % 2 === 0);
-// => { list: [2, 4, 6] }
+const filterStudents = filter("students");
+const findGryffindors = filterStudents(({ house }) => house === "Gryffindor");
+
+const prevState = {
+  students: [
+    { name: "Harry", house: "Gryffindor" },
+    { name: "Cedric", house: "Hufflepuff" },
+    { name: "Pansy", house: "Slytherin" }
+  ]
+};
+
+const nextState = findGryffindors(prevState);
+// => { students: [{ name: "Harry", house: "Gryffindor" }] }
 ```
 
 ### `increment`
@@ -178,11 +197,12 @@ Increments a value, as in the example:
 
 ```javascript
 import { increment } from "react-state-mutations";
-const mutation = increment("count");
 
-const prevState = { count: 1 };
-const nextState = mutation(prevState);
-// => { count: 2 }
+const upgradeBroom = increment("Nimbus");
+
+const prevState = { Nimbus: 2000 };
+const nextState = upgradeBroom(prevState);
+// => { Nimbus: 2001 }
 ```
 
 ### `map`
@@ -191,11 +211,21 @@ Maps over a list, as in the example:
 
 ```javascript
 import { map } from "react-state-mutations";
-const mutation = map("list");
 
-const prevState = { list: [1, 2, 3] };
-const nextState = mutation(value => value * 2);
-// => { list: [2, 4, 6] }
+const mapStudents = map("students");
+const graduateStudents = mapStudents(({ year, ...rest }) => ({
+  year + 1, ...rest
+}));
+
+const prevState = {
+  students: [
+    { name: "Harry", year: 2 },
+    { name: "Ginny", year: 1 }
+  ]
+};
+
+const nextState = graduateStudents(prevState);
+// => { students: [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }] }
 ```
 
 ### `mutate`
@@ -204,11 +234,13 @@ Mutates a value, as in the example:
 
 ```javascript
 import { mutate } from "react-state-mutations";
-const mutation = mutate("object");
 
-const prevState = { object: { foo: "bar" } };
-const nextState = mutation({ foo: "baz" })(prevState);
-// => { object: { foo: "baz" } }
+const mutateLupin = mutate("Lupin");
+const fullMoon = mutateLupin({ status: "Wolf" });
+
+const prevState = { Lupin: { status: "Man", role: "Professor" } };
+const nextState = fullMoon(prevState);
+// => { Lupin: { status: "Wolf", role: "Professor" } }
 ```
 
 ### `prepend`
@@ -217,11 +249,12 @@ Prepends a value to a list, as in the example:
 
 ```javascript
 import { prepend } from "react-state-mutations";
-const mutation = mutate("list");
 
-const prevState = { list: [1, 2, 3] };
-const nextState = mutation(0)(prevState);
-// => { list: [0, 1, 2, 3] }
+const prependStudent = prepend("students");
+
+const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
+const nextState = prependStudent({ name: "Ron" })(prevState);
+// => { students: [{ name: "Ron" }, { name: "Harry" }, { name: "Hermione" }] }
 ```
 
 ### `toggle`
@@ -230,11 +263,12 @@ Toggles a boolean value, as in the example:
 
 ```javascript
 import { toggle } from "react-state-mutations";
-const mutation = toggle("boolean");
 
-const prevState = { boolean: true };
-const nextState = mutation(prevState);
-// => { boolean: false }
+const toggleWizard = toggle("wizard");
+
+const prevState = { wizard: false };
+const nextState = toggleWizard(prevState);
+// => { wizard: true }
 ```
 
 ## Advanced
@@ -247,12 +281,16 @@ Creates a mutation that modifies state. Takes as an argument a function that acc
 
 ```javascript
 import { makeStandaloneMutation } from "react-state-mutations";
-const add = makeStandaloneMutation(value => value + 10);
-const mutation = add("count");
 
-const prevState = { count: 5 };
+const encrypt = makeStandaloneMutation(value => (
+  value.split("").reverse().join("")
+));
+
+const encryptName = encrypt("name");
+
+const prevState = { name: "Harry" };
 const nextState = mutation(prevState);
-// => { count: 15 }
+// => { name: "yrraH" }
 ```
 
 ### `makeArgumentMutation`
@@ -261,12 +299,13 @@ Creates a mutation that is a function that takes one argument, that itself retur
 
 ```javascript
 import { makeArgumentMutation } from "react-state-mutations";
-const add = makeArgumentMutation((value, adder) => value + adder);
-const mutation = add("count");
 
-const prevState = { count: 5 };
-const nextState = mutation(10)(prevState);
-// => { count: 15 }
+const add = makeArgumentMutation((value, increment) => value + increment);
+const flyUp100Feet = add("currentHeight")(100);
+
+const prevState = { currentHeight: 0 };
+const nextState = flyUp100Feet(prevState);
+// => { currentHeight: 100 }
 ```
 
 ### `makeCallbackMutation`
@@ -275,12 +314,19 @@ Similar to `makeArgumentMutation`, it accepts the name of a member function on t
 
 ```javascript
 import { makeCallbackMutation } from "react-state-mutations";
-const map = makeCallbackMutation("map");
-const mutation = map("list");
 
-const prevState = { list: [1, 2, 3] };
-const nextState = mutation(value => value * 2)(prevState);
-// => { list: [2, 4, 6] }
+const mapStudents = makeCallbackMutation("map")("students");
+const graduate = mapStudents(({ year, ...rest }) => ({ year + 1, ...rest }));
+
+const prevState = {
+  students: [
+    { name: "Harry", year: 2 },
+    { name: "Ginny", year: 1 }
+  ]
+};
+
+const nextState = graduate(prevState);
+// => { students: [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }] }
 ```
 
 ### `combineMutations`
@@ -290,12 +336,20 @@ Combines multiple mutations into a single mutation function. Takes any number of
 If any "argument" mutations are passed in, `combineMutations` will return a function that accepts any number of arguments, that themselves will be passed to the mutations in the order in which they appear in the list given to `combineMutations`. As in the example:
 
 ```javascript
-import { append, prepend } from "react-state-mutations";
-const mutation = combineMutations(append("list"), prepend("list"));
+import { append, increment } from "react-state-mutations";
 
-const prevState = { list: [1, 2, 3] };
-const nextState = mutation(4, 0)(prevState);
-// => { list: [0, 1, 2, 3, 4] };
+const addToTeam = combineMutations(append("players"), increment("roster"));
+
+const prevState = {
+  players: [{ name: "Angelina" }, { name: "Alicia" }],
+  roster: 2
+};
+
+const nextState = mutation({ name: "Katie" })(prevState);
+// => {
+//   players: [{ name: "Angelina" }, { name: "Alicia" }, { name: "Katie" }],
+//   roster: 3
+// };
 ```
 
 If all of the mutations that are passed in are "standalone" mutations, then
@@ -304,14 +358,12 @@ the state. As in the example:
 
 ```javascript
 import { toggle, increment } from "react-state-mutations";
-const mutation = combineMutations(
-  toggle("boolean"),
-  increment("count")
-);
 
-const prevState = { boolean: true, count: 1 };
+const becomeAWizard = combineMutations(toggle("wizard"), increment("wizards"));
+
+const prevState = { wizard: false, wizards: 0 };
 const nextState = mutation(prevState);
-// => { boolean: false, count: 2 };
+// => { wizard: true, wizards: 1 };
 ```
 
 You can additionally pass plain objects into `combineMutations` that are
@@ -320,10 +372,14 @@ resultant function and treated as "standalone" mutations that do not accept
 arguments. As in the example:
 
 ```javascript
-import { toggle } from "react-state-mutations";
-const mutation = combineMutations(toggle("boolean"), { a: "b" });
+import { combineMutations, makeArgumentMutation } from "react-state-mutations";
 
-const prevState = { boolean: true, a: "a" };
-const nextState = mutation(prevState);
-// => { boolean: false, a: "b" };
+const startFlying = combineMutations(
+  makeArgumentMutation((value, height) => value + height),
+  { flying: true }
+);
+
+const prevState = { height: 0, flying: false };
+const nextState = startFlying(100)(prevState);
+// => { height: 100, flying: true };
 ```
