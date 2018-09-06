@@ -29,10 +29,10 @@ In the example above, since both `setState` calls mutate the same key, those mut
 class Counter extends Component {
   state = { count: 0 };
 
-  handleClick() {
+  handleClick = () => {
     this.setState(({ count }) => ({ count: count + 1 }));
     this.setState(({ count }) => ({ count: count + 1 }));
-  }
+  };
 
   render() {
     const { count } = this.state;
@@ -49,10 +49,10 @@ class Counter extends Component {
 
   state = { count: 0 };
 
-  handleClick() {
+  handleClick = () => {
     this.setState(this.incrementCount);
     this.setState(this.incrementCount);
-  }
+  };
 
   render() {
     const { count } = this.state;
@@ -71,10 +71,10 @@ class Counter extends Component {
 
   state = { count: 0 };
 
-  handleClick() {
+  handleClick = () => {
     this.setState(this.incrementCount);
     this.setState(this.incrementCount);
-  }
+  };
 
   render() {
     const { count } = this.state;
