@@ -4,28 +4,53 @@
 [![Package Version](https://img.shields.io/npm/v/react-state-mutations.svg)](https://www.npmjs.com/package/react-state-mutations)
 [![Minified GZipped Size](https://img.shields.io/bundlephobia/minzip/react-state-mutations.svg)](https://www.npmjs.com/package/react-state-mutations)
 
-Modify component state without race conditions.
-
-## Getting started
-
-Install this package through npm:
-
-```
-npm install react-state-mutations --save
-```
-
-You can now import the mutations that you need into your component, as in the example below:
+State updates in `React` [may be asynchronous](https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous). In the case that you're using the previous state to calculate the next state, you could run into race conditions when `React` attempts to batch your state changes together. The following example demonstrates the problem:
 
 ```javascript
-import React, { Component } from "react";
-import { increment } from "react-state-mutations";
+// Warning! This is the bad example.
+class Counter extends Component {
+  state = { count: 0 };
 
-class Example extends Component {
-  incrementCount = increment("count");
+  handleClick = () => {
+    this.setState({ count: this.state.count + 1 });
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  render() {
+    const { count } = this.state;
+    return <span onClick={this.handleClick}>{count}</span>;
+  }
+}
+```
+
+In the example above, since both `setState` calls mutate the same key, those mutations can be merged together, and you may end up with it only incrementing each click by one since the last mutation will win. You can solve this by passing a function to `setState`, as those are executed sequentially and will not run over each other. This is demonstrated in the example below:
+
+```javascript
+class Counter extends Component {
+  state = { count: 0 };
+
+  handleClick() {
+    this.setState(({ count }) => ({ count: count + 1 }));
+    this.setState(({ count }) => ({ count: count + 1 }));
+  }
+
+  render() {
+    const { count } = this.state;
+    return <span onClick={this.handleClick}>{count}</span>;
+  }
+}
+```
+
+The beauty of this approach is that you can begin to extract out the state mutation into a separate function that can then be reused. As in the following refactor:
+
+```javascript
+class Counter extends Component {
+  incrementCount = ({ count }) => ({ count: count + 1 });
 
   state = { count: 0 };
 
   handleClick() {
+    this.setState(this.incrementCount);
     this.setState(this.incrementCount);
   }
 
@@ -35,6 +60,32 @@ class Example extends Component {
   }
 }
 ```
+
+This is the basis for this library. The `increment` function is already defined for you, as well as various other utilities. This library additionally provides an easy interface for defining your own mutations that read from the previous state so that you never run into race conditions with your state mutations. Using `react-state-mutations`, the final result would look like:
+
+```javascript
+import { increment } from "react-state-mutations";
+
+class Counter extends Component {
+  incrementCount = increment("count");
+
+  state = { count: 0 };
+
+  handleClick() {
+    this.setState(this.incrementCount);
+    this.setState(this.incrementCount);
+  }
+
+  render() {
+    const { count } = this.state;
+    return <span onClick={this.handleClick}>{count}</span>;
+  }
+}
+```
+
+## Getting started
+
+Install this package through npm (`npm install react-state-mutations --save`) or `yarn` (`yarn add react-state-mutations`). You can then import and use the mutations from within your components.
 
 ## Pre-built mutations
 
