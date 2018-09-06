@@ -44,9 +44,9 @@ class Counter extends Component {
 The beauty of this approach is that you can begin to extract out the state mutation into a separate function that can then be reused. As in the following refactor:
 
 ```javascript
-class Counter extends Component {
-  incrementCount = ({ count }) => ({ count: count + 1 });
+const incrementCount = ({ count }) => ({ count: count + 1 });
 
+class Counter extends Component {
   state = { count: 0 };
 
   handleClick = () => {
@@ -66,9 +66,9 @@ This is the basis for this library. The `increment` function is already defined 
 ```javascript
 import { increment } from "react-state-mutations";
 
-class Counter extends Component {
-  incrementCount = increment("count");
+const incrementCount = increment("count");
 
+class Counter extends Component {
   state = { count: 0 };
 
   handleClick = () => {
