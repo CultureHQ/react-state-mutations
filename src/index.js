@@ -20,6 +20,8 @@ export const cycle = makeArgumentMutation((value, object) => (
 
 export const decrement = makeStandaloneMutation(value => value - 1);
 
+export const direct = makeArgumentMutation((value, object) => object);
+
 export const filter = makeCallbackMutation("filter");
 
 export const increment = makeStandaloneMutation(value => value + 1);

@@ -5,6 +5,7 @@ import {
   append,
   cycle,
   decrement,
+  direct,
   filter,
   increment,
   map,
@@ -72,6 +73,15 @@ test("decrement", () => {
 
   expect(nextState.object).toEqual(0);
   expect(prevState.object).toEqual(1);
+});
+
+test("direct", () => {
+  const mutation = direct("object")("bar");
+  const prevState = { object: "foo" };
+  const nextState = mutation(prevState);
+
+  expect(nextState.object).toEqual("bar");
+  expect(prevState.object).toEqual("foo");
 });
 
 test("filter", () => {

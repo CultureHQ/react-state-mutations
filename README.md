@@ -66,6 +66,19 @@ const nextState = mutation(prevState);
 // => { count: 0 }
 ```
 
+### `direct`
+
+Directly modifies a value. This is mainly valuable when used with `combineMutations`, as otherwise you could just pass the value to `setState` as normal. The code below uses `combineMutations` with others as an example:
+
+```javascript
+import { direct, toggle, combineMutations } from "react-state-mutations";
+const mutation = combineMutations(direct("object"), toggle("boolean"));
+
+const prevState = { object: 5, boolean: true };
+const nextState = mutation(10)(prevState);
+// => { object: 10, boolean: false }
+```
+
 ### `filter`
 
 Filters a list, as in the example:
