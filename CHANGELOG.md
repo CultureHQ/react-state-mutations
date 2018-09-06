@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 ### Added
-- The `map` mutation and the `makeEnumerableMutation` builder.
+- The `map` mutation.
+- The `makeCallbackMutation` mutation builder.
+- The `cycle` mutation.
 
 ## [0.1.1] - 2018-09-05
 ### Changed

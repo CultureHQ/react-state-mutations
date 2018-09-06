@@ -1,8 +1,9 @@
 import {
   makeStandaloneMutation,
   makeArgumentMutation,
-  makeEnumerableMutation,
+  makeCallbackMutation,
   append,
+  cycle,
   decrement,
   filter,
   increment,
@@ -31,8 +32,8 @@ test("makeArgumentMutation", () => {
   expect(prevState.object).toEqual(1);
 });
 
-test("makeEnumerableMutation", () => {
-  const mutation = makeEnumerableMutation("map")("objects")(value => value * 3);
+test("makeCallbackMutation", () => {
+  const mutation = makeCallbackMutation("map")("objects")(value => value * 3);
   const prevState = { objects: [1, 2, 3] };
   const nextState = mutation(prevState);
 
@@ -47,6 +48,21 @@ test("append", () => {
 
   expect(nextState.objects[nextState.objects.length - 1]).toEqual(4);
   expect(prevState.objects.length).toEqual(3);
+});
+
+test("cycle", () => {
+  const mutation = cycle("object")(["foo", "bar", "baz"]);
+  const prevState = { object: "foo" };
+
+  let nextState = mutation(prevState);
+  expect(nextState.object).toEqual("bar");
+  expect(prevState.object).toEqual("foo");
+
+  nextState = mutation(nextState);
+  expect(nextState.object).toEqual("baz");
+
+  nextState = mutation(nextState);
+  expect(nextState.object).toEqual("foo");
 });
 
 test("decrement", () => {

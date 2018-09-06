@@ -8,19 +8,23 @@ export const makeArgumentMutation = apply => field => object => state => ({
   [field]: apply(state[field], object)
 });
 
-export const makeEnumerableMutation = name => (
+export const makeCallbackMutation = name => (
   makeArgumentMutation((value, callback) => value[name](callback))
 );
 
 export const append = makeArgumentMutation((value, object) => [...value, object]);
 
+export const cycle = makeArgumentMutation((value, object) => (
+  object[(object.indexOf(value) + 1) % object.length]
+));
+
 export const decrement = makeStandaloneMutation(value => value - 1);
 
-export const filter = makeEnumerableMutation("filter");
+export const filter = makeCallbackMutation("filter");
 
 export const increment = makeStandaloneMutation(value => value + 1);
 
-export const map = makeEnumerableMutation("map");
+export const map = makeCallbackMutation("map");
 
 export const mutate = makeArgumentMutation((value, object) => ({ ...value, ...object }));
 

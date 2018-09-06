@@ -176,13 +176,13 @@ const nextState = mutation(10)(prevState);
 // => { count: 15 }
 ```
 
-### `makeEnumerableMutation`
+### `makeCallbackMutation`
 
-Similar to `makeArgumentMutation`, it accepts the name of a enumerable method (such as `filter` or `map`) and creates a mutation that is a function that accepts both a value and a callback to be passed to the enumerable function, and returns the modified value. As in the example:
+Similar to `makeArgumentMutation`, it accepts the name of a member function on the object that is being mutated (such as `filter` or `map`) and creates a mutation that is a function that accepts both a value and a callback to be passed to the member function, and returns the modified value. As in the example:
 
 ```javascript
-import { makeEnumerableMutation } from "react-state-mutations";
-const map = makeEnumerableMutation("map");
+import { makeCallbackMutation } from "react-state-mutations";
+const map = makeCallbackMutation("map");
 const mutation = map("list");
 
 const prevState = { list: [1, 2, 3] };
