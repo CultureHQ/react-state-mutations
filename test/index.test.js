@@ -1,10 +1,14 @@
 import {
   makeStandaloneMutation,
   makeArgumentMutation,
+  makeCallbackMutation,
   append,
+  cycle,
   decrement,
+  direct,
   filter,
   increment,
+  map,
   mutate,
   prepend,
   toggle,
@@ -12,74 +16,123 @@ import {
 } from "../src/index";
 
 test("makeStandaloneMutation", () => {
-  const mutation = makeStandaloneMutation(value => value + 50);
+  const mutation = makeStandaloneMutation(value => value + 50)("object");
   const prevState = { object: 1 };
-  const nextState = mutation("object")(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object).toEqual(51);
   expect(prevState.object).toEqual(1);
 });
 
 test("makeArgumentMutation", () => {
-  const mutation = makeArgumentMutation((value, object) => value + object);
+  const mutation = makeArgumentMutation((value, object) => value + object)("object")(50);
   const prevState = { object: 1 };
-  const nextState = mutation("object")(50)(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object).toEqual(51);
   expect(prevState.object).toEqual(1);
 });
 
-test("append", () => {
+test("makeCallbackMutation", () => {
+  const mutation = makeCallbackMutation("map")("objects")(value => value * 3);
   const prevState = { objects: [1, 2, 3] };
-  const nextState = append("objects")(4)(prevState);
+  const nextState = mutation(prevState);
+
+  expect(nextState.objects).toEqual([3, 6, 9]);
+  expect(prevState.objects).toEqual([1, 2, 3]);
+});
+
+test("append", () => {
+  const mutation = append("objects")(4);
+  const prevState = { objects: [1, 2, 3] };
+  const nextState = mutation(prevState);
 
   expect(nextState.objects[nextState.objects.length - 1]).toEqual(4);
   expect(prevState.objects.length).toEqual(3);
 });
 
+test("cycle", () => {
+  const mutation = cycle("object")(["foo", "bar", "baz"]);
+  const prevState = { object: "foo" };
+
+  let nextState = mutation(prevState);
+  expect(nextState.object).toEqual("bar");
+  expect(prevState.object).toEqual("foo");
+
+  nextState = mutation(nextState);
+  expect(nextState.object).toEqual("baz");
+
+  nextState = mutation(nextState);
+  expect(nextState.object).toEqual("foo");
+});
+
 test("decrement", () => {
+  const mutation = decrement("object");
   const prevState = { object: 1 };
-  const nextState = decrement("object")(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object).toEqual(0);
   expect(prevState.object).toEqual(1);
 });
 
+test("direct", () => {
+  const mutation = direct("object")("bar");
+  const prevState = { object: "foo" };
+  const nextState = mutation(prevState);
+
+  expect(nextState.object).toEqual("bar");
+  expect(prevState.object).toEqual("foo");
+});
+
 test("filter", () => {
+  const mutation = filter("objects")(value => value % 2 === 0);
   const prevState = { objects: [1, 2, 3, 4, 5, 6] };
-  const nextState = filter("objects")(value => value % 2 === 0)(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.objects).toEqual([2, 4, 6]);
   expect(prevState.objects).toEqual([1, 2, 3, 4, 5, 6]);
 });
 
 test("increment", () => {
+  const mutation = increment("object");
   const prevState = { object: 1 };
-  const nextState = increment("object")(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object).toEqual(2);
   expect(prevState.object).toEqual(1);
 });
 
+test("map", () => {
+  const mutation = map("objects")(value => value * 2);
+  const prevState = { objects: [1, 2, 3] };
+  const nextState = mutation(prevState);
+
+  expect(nextState.objects).toEqual([2, 4, 6]);
+  expect(prevState.objects).toEqual([1, 2, 3]);
+});
+
 test("mutate", () => {
+  const mutation = mutate("object")({ a: "c" });
   const prevState = { object: { a: "b" } };
-  const nextState = mutate("object")({ a: "c" })(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object.a).toEqual("c");
   expect(prevState.object.a).toEqual("b");
 });
 
 test("prepend", () => {
+  const mutation = prepend("objects")(0);
   const prevState = { objects: [1, 2, 3] };
-  const nextState = prepend("objects")(0)(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.objects[0]).toEqual(0);
   expect(prevState.objects.length).toEqual(3);
 });
 
 test("toggle", () => {
+  const mutation = toggle("object");
   const prevState = { object: true };
-  const nextState = toggle("object")(prevState);
+  const nextState = mutation(prevState);
 
   expect(nextState.object).toBe(false);
   expect(prevState.object).toBe(true);
