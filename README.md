@@ -176,6 +176,20 @@ const nextState = mutation(10)(prevState);
 // => { count: 15 }
 ```
 
+### `makeEnumerableMutation`
+
+Similar to `makeArgumentMutation`, it accepts the name of a enumerable method (such as `filter` or `map`) and creates a mutation that is a function that accepts both a value and a callback to be passed to the enumerable function, and returns the modified value. As in the example:
+
+```javascript
+import { makeEnumerableMutation } from "react-state-mutations";
+const map = makeEnumerableMutation("map");
+const mutation = map("list");
+
+const prevState = { list: [1, 2, 3] };
+const nextState = mutation(value => value * 2)(prevState);
+// => { list: [2, 4, 6] }
+```
+
 ### `combineMutations`
 
 Combines multiple mutations into a single mutation function. Takes any number of arguments and returns a singular mutation created out of the combination of them all. Can accept either mutations created through `react-state-mutations`, or plain objects that are meant to be directly setting state.
