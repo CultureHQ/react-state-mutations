@@ -1,4 +1,5 @@
 .*
-src/
-test/
-yarn.lock
+/coverage/
+/src/
+/test/
+/yarn.lock
