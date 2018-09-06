@@ -104,6 +104,26 @@ const nextState = mutation(4)(prevState);
 // => { list: [1, 2, 3, 4] }
 ```
 
+### `cycle`
+
+Cycles through a list of values, as in the example:
+
+```javascript
+import { cycle } from "react-state-mutations";
+
+const mutation = cycle("value")(["alpha", "beta", "gamma"]);
+const prevState = { value: "alpha" };
+
+let nextState = mutation(prevState);
+// => { value: "beta" }
+
+nextState = mutation(nextState);
+// => { value: "gamma" }
+
+nextState = mutation(nextState);
+// => { value: "alpha" }
+```
+
 ### `decrement`
 
 Decrements a value, as in the example:
