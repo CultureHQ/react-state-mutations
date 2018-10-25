@@ -14,6 +14,8 @@ export const makeCallbackMutation = name => (
 
 export const append = makeArgumentMutation((value, object) => [...value, object]);
 
+export const concat = makeArgumentMutation((value, object) => [...value, ...object]);
+
 export const cycle = makeArgumentMutation((value, object) => (
   object[(object.indexOf(value) + 1) % object.length]
 ));
