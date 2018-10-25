@@ -3,6 +3,7 @@ import {
   makeArgumentMutation,
   makeCallbackMutation,
   append,
+  concat,
   cycle,
   decrement,
   direct,
@@ -48,6 +49,16 @@ test("append", () => {
   const nextState = mutation(prevState);
 
   expect(nextState.objects[nextState.objects.length - 1]).toEqual(4);
+  expect(prevState.objects.length).toEqual(3);
+});
+
+test("concat", () => {
+  const mutation = concat("objects")([4, 5, 6]);
+  const prevState = { objects: [1, 2, 3] };
+  const nextState = mutation(prevState);
+
+  expect(nextState.objects.length).toEqual(6);
+  expect(nextState.objects[nextState.objects.length - 1]).toEqual(6);
   expect(prevState.objects.length).toEqual(3);
 });
 

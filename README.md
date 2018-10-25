@@ -90,6 +90,7 @@ Install this package through `npm` (`npm install react-state-mutations --save`) 
 In addition with the ability to create your own mutations, this package ships with some pre-built mutations, listed below.
 
 - [`append`](#append)
+- [`concat`](#concat)
 - [`cycle`](#cycle)
 - [`decrement`](#decrement)
 - [`direct`](#direct)
@@ -112,6 +113,20 @@ const appendStudent = append("students");
 const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
 const nextState = appendStudent({ name: "Ron" })(prevState);
 // => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }] }
+```
+
+### `concat`
+
+Concatentate two lists, as in the example:
+
+```javascript
+import { concat } from "react-state-mutations";
+
+const concatStudents = concat("students");
+
+const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
+const nextState = concatStudents([{ name: "Ron" }, { name: "Ginny" }])(prevState);
+// => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }, { name: "Ginny" }] }
 ```
 
 ### `cycle`
