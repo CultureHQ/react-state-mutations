@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.map = exports.increment = exports.filter = exports.direct = exports.decrement = exports.cycle = exports.append = exports.makeCallbackMutation = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
+exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.map = exports.increment = exports.filter = exports.direct = exports.decrement = exports.cycle = exports.concat = exports.append = exports.makeCallbackMutation = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -53,6 +53,10 @@ var append = makeArgumentMutation(function (value, object) {
   return _toConsumableArray(value).concat([object]);
 });
 exports.append = append;
+var concat = makeArgumentMutation(function (value, object) {
+  return _toConsumableArray(value).concat(_toConsumableArray(object));
+});
+exports.concat = concat;
 var cycle = makeArgumentMutation(function (value, object) {
   return object[(object.indexOf(value) + 1) % object.length];
 });
