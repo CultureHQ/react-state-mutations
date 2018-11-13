@@ -4,37 +4,36 @@ export const makeStandaloneMutation = apply => field => {
   return mutation;
 };
 
-export const makeArgumentMutation = apply => field => object => state => ({
-  [field]: apply(state[field], object)
-});
+export const makeArgumentMutation = apply => field => object => {
+  const mutation = apply(object);
+  return state => ({ [field]: mutation(state[field]) });
+};
 
-export const makeCallbackMutation = name => (
-  makeArgumentMutation((value, callback) => value[name](callback))
-);
+export const decrementState = value => value - 1;
+export const incrementState = value => value + 1;
+export const toggleState = value => !value;
 
-export const append = makeArgumentMutation((value, object) => [...value, object]);
+export const decrement = makeStandaloneMutation(decrementState);
+export const increment = makeStandaloneMutation(incrementState);
+export const toggle = makeStandaloneMutation(toggleState);
 
-export const concat = makeArgumentMutation((value, object) => [...value, ...object]);
+export const appendState = object => value => [...value, object];
+export const concatState = object => value => [...value, ...object];
+export const cycleState = object => value => object[(object.indexOf(value) + 1) % object.length];
+export const directState = object => () => object;
+export const filterState = callback => value => value.filter(callback);
+export const mapState = callback => value => value.map(callback);
+export const mutateState = object => value => ({ ...value, ...object });
+export const prependState = object => value => [object, ...value];
 
-export const cycle = makeArgumentMutation((value, object) => (
-  object[(object.indexOf(value) + 1) % object.length]
-));
-
-export const decrement = makeStandaloneMutation(value => value - 1);
-
-export const direct = makeArgumentMutation((value, object) => object);
-
-export const filter = makeCallbackMutation("filter");
-
-export const increment = makeStandaloneMutation(value => value + 1);
-
-export const map = makeCallbackMutation("map");
-
-export const mutate = makeArgumentMutation((value, object) => ({ ...value, ...object }));
-
-export const prepend = makeArgumentMutation((value, object) => [object, ...value]);
-
-export const toggle = makeStandaloneMutation(value => !value);
+export const append = makeArgumentMutation(appendState);
+export const concat = makeArgumentMutation(concatState);
+export const cycle = makeArgumentMutation(cycleState);
+export const direct = makeArgumentMutation(directState);
+export const filter = makeArgumentMutation(filterState);
+export const map = makeArgumentMutation(mapState);
+export const mutate = makeArgumentMutation(mutateState);
+export const prepend = makeArgumentMutation(prependState);
 
 export const combineMutations = (...mutations) => {
   const normalized = mutations.map(mutation => {
