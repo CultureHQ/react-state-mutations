@@ -8,6 +8,8 @@ State updates in `React` [may be asynchronous](https://reactjs.org/docs/state-an
 
 ```javascript
 // Warning! This is the bad example.
+import React, { Component } from "react";
+
 class Counter extends Component {
   state = { count: 0 };
 
@@ -18,14 +20,18 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <span onClick={this.handleClick}>{count}</span>;
+    return <button type="button" onClick={this.handleClick}>{count}</button>;
   }
 }
+
+export default Counter;
 ```
 
 In the example above, since both `setState` calls mutate the same key, those mutations can be merged together, and you may end up with it only incrementing each click by one since the last mutation will win. You can solve this by passing a function to `setState`, as those are executed sequentially and will not run over each other. This is demonstrated in the example below:
 
 ```javascript
+import React, { Component } from "react";
+
 class Counter extends Component {
   state = { count: 0 };
 
@@ -36,14 +42,18 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <span onClick={this.handleClick}>{count}</span>;
+    return <button type="button" onClick={this.handleClick}>{count}</button>;
   }
 }
+
+export default Counter;
 ```
 
 The beauty of this approach is that you can begin to extract out the state mutation into a separate function that can then be reused. As in the following refactor:
 
 ```javascript
+import React, { Component } from "react";
+
 const incrementCount = ({ count }) => ({ count: count + 1 });
 
 class Counter extends Component {
@@ -56,14 +66,17 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <span onClick={this.handleClick}>{count}</span>;
+    return <button type="button" onClick={this.handleClick}>{count}</button>;
   }
 }
+
+export default Counter;
 ```
 
 This is the basis for this library. The `increment` function is already defined for you, as well as various other utilities. This library additionally provides an easy interface for defining your own mutations that read from the previous state so that you never run into race conditions with your state mutations. Using `react-state-mutations`, the final result would look like:
 
 ```javascript
+import React, { Component } from "react";
 import { increment } from "react-state-mutations";
 
 const incrementCount = increment("count");
@@ -78,9 +91,27 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <span onClick={this.handleClick}>{count}</span>;
+    return <button type="button" onClick={this.handleClick}>{count}</button>;
   }
 }
+
+export default Counter;
+```
+
+You can alternatively use this in conjunction with the `useState` feature in React. To get the equivalent as the above example working, you can use:
+
+```javascript
+import React, { useState } from "react";
+import { incrementState } from "react-state-mutations";
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+  const onClick = () => setCount(incrementState);
+
+  return <button type="button" onClick={onClick}>{count}</button>;
+};
+
+export default Counter;
 ```
 
 ## Getting started
