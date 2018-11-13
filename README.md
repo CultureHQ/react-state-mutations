@@ -459,7 +459,7 @@ Creates a mutation that is a function that takes one argument, that itself retur
 ```javascript
 import { makeArgumentMutation } from "react-state-mutations";
 
-const add = makeArgumentMutation((value, increment) => value + increment);
+const add = makeArgumentMutation(increment => value => value + increment);
 const flyUp100Feet = add("currentHeight")(100);
 
 const prevState = { currentHeight: 0 };
@@ -513,7 +513,7 @@ arguments. As in the example:
 import { combineMutations, makeArgumentMutation } from "react-state-mutations";
 
 const startFlying = combineMutations(
-  makeArgumentMutation((value, height) => value + height),
+  makeArgumentMutation(height => value => value + height),
   { flying: true }
 );
 
