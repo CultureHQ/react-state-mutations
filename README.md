@@ -454,7 +454,7 @@ const nextState = encryptName(prevState);
 
 ### `makeArgumentMutation`
 
-Creates a mutation that is a function that takes one argument, that itself returns a function that modifies state. Takes as an argument a function that accepts both a value and one argument, and returns the modifies value. As in the example:
+Creates a mutation that is a function that takes one argument, that itself returns a function that modifies state. Takes as a function that accepts a value that returns a return that accepts the state and returns the modifies value. As in the example:
 
 ```javascript
 import { makeArgumentMutation } from "react-state-mutations";
