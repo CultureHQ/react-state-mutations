@@ -1,7 +1,6 @@
 import {
   makeStandaloneMutation,
   makeArgumentMutation,
-  makeCallbackMutation,
   append,
   concat,
   cycle,
@@ -26,21 +25,12 @@ test("makeStandaloneMutation", () => {
 });
 
 test("makeArgumentMutation", () => {
-  const mutation = makeArgumentMutation((value, object) => value + object)("object")(50);
+  const mutation = makeArgumentMutation(object => value => value + object)("object")(50);
   const prevState = { object: 1 };
   const nextState = mutation(prevState);
 
   expect(nextState.object).toEqual(51);
   expect(prevState.object).toEqual(1);
-});
-
-test("makeCallbackMutation", () => {
-  const mutation = makeCallbackMutation("map")("objects")(value => value * 3);
-  const prevState = { objects: [1, 2, 3] };
-  const nextState = mutation(prevState);
-
-  expect(nextState.objects).toEqual([3, 6, 9]);
-  expect(prevState.objects).toEqual([1, 2, 3]);
 });
 
 test("append", () => {
