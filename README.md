@@ -124,7 +124,7 @@ import { appendState } from "react-state-mutations";
 
 const prevState = [{ name: "Harry" }, { name: "Hermione" }];
 const nextState = appendState({ name: "Ron" })(prevState);
-// => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }] }
+// => [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }]
 ```
 
 ### `concat`
@@ -448,7 +448,7 @@ const encrypt = makeStandaloneMutation(value => (
 const encryptName = encrypt("name");
 
 const prevState = { name: "Harry" };
-const nextState = mutation(prevState);
+const nextState = encryptName(prevState);
 // => { name: "yrraH" }
 ```
 
@@ -483,7 +483,7 @@ const prevState = {
   roster: 2
 };
 
-const nextState = mutation({ name: "Katie" })(prevState);
+const nextState = addToTeam({ name: "Katie" })(prevState);
 // => {
 //   players: [{ name: "Angelina" }, { name: "Alicia" }, { name: "Katie" }],
 //   roster: 3
