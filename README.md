@@ -101,6 +101,8 @@ In addition with the ability to create your own mutations, this package ships wi
 - [`prepend`](#prepend)
 - [`toggle`](#toggle)
 
+There is also an equivalent version of each of these mutations that works on standalone values. This can be used in conjunction with React's `useState` to manipulate state in a safe way. The equivalent version is named the same, with `State` appended onto the end. i.e., the equivalent mutation for `toggle` is `toggleState`, which will effectively perform `value => !value`.
+
 ### `append`
 
 Appends a value to a list, as in the example:
@@ -112,6 +114,16 @@ const appendStudent = append("students");
 
 const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
 const nextState = appendStudent({ name: "Ron" })(prevState);
+// => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }] }
+```
+
+With single values:
+
+```javascript
+import { appendState } from "react-state-mutations";
+
+const prevState = [{ name: "Harry" }, { name: "Hermione" }];
+const nextState = appendState({ name: "Ron" })(prevState);
 // => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }] }
 ```
 
@@ -127,6 +139,16 @@ const concatStudents = concat("students");
 const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
 const nextState = concatStudents([{ name: "Ron" }, { name: "Ginny" }])(prevState);
 // => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }, { name: "Ginny" }] }
+```
+
+With single values:
+
+```javascript
+import { concatState } from "react-state-mutations";
+
+const prevState = [{ name: "Harry" }, { name: "Hermione" }];
+const nextState = concatState([{ name: "Ron" }, { name: "Ginny" }])(prevState);
+// => [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }, { name: "Ginny" }]
 ```
 
 ### `cycle`
@@ -155,6 +177,29 @@ nextState = visitNextHogwartsHouse(nextState);
 // => { house: "Gryffindor" }
 ```
 
+With single values:
+
+```javascript
+import { cycleState } from "react-state-mutations";
+
+const visitNextHogwartsHouse = cycleState([
+  "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+]);
+
+const prevState = "Gryffindor";
+let nextState = visitNextHogwartsHouse(prevState);
+// => "Hufflepuff"
+
+nextState = visitNextHogwartsHouse(nextState);
+// => "Ravenclaw"
+
+nextState = visitNextHogwartsHouse(nextState);
+// => "Slytherin"
+
+nextState = visitNextHogwartsHouse(nextState);
+// => "Gryffindor"
+```
+
 ### `decrement`
 
 Decrements a value, as in the example:
@@ -167,6 +212,16 @@ const destroyHorcrux = decrement("horcruxes");
 const prevState = { horcruxes: 7 };
 const nextState = destroyHorcrux(prevState);
 // => { count: 6 }
+```
+
+With single values:
+
+```javascript
+import { decrementState } from "react-state-mutations";
+
+const prevState = 7;
+const nextState = decrementState(prevState);
+// => 6
 ```
 
 ### `direct`
@@ -182,6 +237,18 @@ const becomeAWizard = combineMutations(toggle("wizard"), getCake);
 const prevState = { wizard: false, cake: null };
 const nextState = becomeAWizard("chocolate")(prevState);
 // => { wizard: true, cake: "chocolate" }
+```
+
+With single values:
+
+```javascript
+import { directState } from "react-state-mutations";
+
+const getCake = directState("cake");
+
+const prevState = null;
+const nextState = getCake(prevState);
+// => "cake"
 ```
 
 ### `filter`
@@ -206,6 +273,23 @@ const nextState = findGryffindors(prevState);
 // => { students: [{ name: "Harry", house: "Gryffindor" }] }
 ```
 
+With single values:
+
+```javascript
+import { filterState } from "react-state-mutations";
+
+const findGryffindors = filterState(({ house }) => house === "Gryffindor");
+
+const prevState = [
+  { name: "Harry", house: "Gryffindor" },
+  { name: "Cedric", house: "Hufflepuff" },
+  { name: "Pansy", house: "Slytherin" }
+];
+
+const nextState = findGryffindors(prevState);
+// => [{ name: "Harry", house: "Gryffindor" }]
+```
+
 ### `increment`
 
 Increments a value, as in the example:
@@ -218,6 +302,16 @@ const upgradeBroom = increment("Nimbus");
 const prevState = { Nimbus: 2000 };
 const nextState = upgradeBroom(prevState);
 // => { Nimbus: 2001 }
+```
+
+With single values:
+
+```javascript
+import { incrementState } from "react-state-mutations";
+
+const prevState = 2000;
+const nextState = incrementState(prevState);
+// => 2001
 ```
 
 ### `map`
@@ -243,6 +337,24 @@ const nextState = graduateStudents(prevState);
 // => { students: [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }] }
 ```
 
+With single values:
+
+```javascript
+import { mapState } from "react-state-mutations";
+
+const graduateStudents = mapState(({ year, ...rest }) => ({
+  year + 1, ...rest
+}));
+
+const prevState = [
+  { name: "Harry", year: 2 },
+  { name: "Ginny", year: 1 }
+];
+
+const nextState = graduateStudents(prevState);
+// => [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }]
+```
+
 ### `mutate`
 
 Mutates a value, as in the example:
@@ -256,6 +368,18 @@ const fullMoon = mutateLupin({ status: "Wolf" });
 const prevState = { Lupin: { status: "Man", role: "Professor" } };
 const nextState = fullMoon(prevState);
 // => { Lupin: { status: "Wolf", role: "Professor" } }
+```
+
+With single values:
+
+```javascript
+import { mutateState } from "react-state-mutations";
+
+const fullMoon = mutateState({ status: "Wolf" });
+
+const prevState = { status: "Man", role: "Professor" };
+const nextState = fullMoon(prevState);
+// => { status: "Wolf", role: "Professor" }
 ```
 
 ### `prepend`
@@ -272,6 +396,16 @@ const nextState = prependStudent({ name: "Ron" })(prevState);
 // => { students: [{ name: "Ron" }, { name: "Harry" }, { name: "Hermione" }] }
 ```
 
+With single values:
+
+```javascript
+import { prependState } from "react-state-mutations";
+
+const prevState = [{ name: "Harry" }, { name: "Hermione" }];
+const nextState = prependState({ name: "Ron" })(prevState);
+// => [{ name: "Ron" }, { name: "Harry" }, { name: "Hermione" }]
+```
+
 ### `toggle`
 
 Toggles a boolean value, as in the example:
@@ -284,6 +418,16 @@ const toggleWizard = toggle("wizard");
 const prevState = { wizard: false };
 const nextState = toggleWizard(prevState);
 // => { wizard: true }
+```
+
+With single values:
+
+```javascript
+import { toggleState } from "react-state-mutations";
+
+const prevState = false;
+const nextState = toggleState(prevState);
+// => true
 ```
 
 ## Advanced
@@ -321,27 +465,6 @@ const flyUp100Feet = add("currentHeight")(100);
 const prevState = { currentHeight: 0 };
 const nextState = flyUp100Feet(prevState);
 // => { currentHeight: 100 }
-```
-
-### `makeCallbackMutation`
-
-Similar to `makeArgumentMutation`, it accepts the name of a member function on the object that is being mutated (such as `filter` or `map`) and creates a mutation that is a function that accepts both a value and a callback to be passed to the member function, and returns the modified value. As in the example:
-
-```javascript
-import { makeCallbackMutation } from "react-state-mutations";
-
-const mapStudents = makeCallbackMutation("map")("students");
-const graduate = mapStudents(({ year, ...rest }) => ({ year + 1, ...rest }));
-
-const prevState = {
-  students: [
-    { name: "Harry", year: 2 },
-    { name: "Ginny", year: 1 }
-  ]
-};
-
-const nextState = graduate(prevState);
-// => { students: [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }] }
 ```
 
 ### `combineMutations`

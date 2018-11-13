@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.combineMutations = exports.toggle = exports.prepend = exports.mutate = exports.map = exports.increment = exports.filter = exports.direct = exports.decrement = exports.cycle = exports.concat = exports.append = exports.makeCallbackMutation = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
+exports.combineMutations = exports.prepend = exports.mutate = exports.map = exports.filter = exports.direct = exports.cycle = exports.concat = exports.append = exports.prependState = exports.mutateState = exports.mapState = exports.filterState = exports.directState = exports.cycleState = exports.concatState = exports.appendState = exports.toggle = exports.increment = exports.decrement = exports.toggleState = exports.incrementState = exports.decrementState = exports.makeArgumentMutation = exports.makeStandaloneMutation = void 0;
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -33,8 +33,9 @@ exports.makeStandaloneMutation = makeStandaloneMutation;
 var makeArgumentMutation = function makeArgumentMutation(apply) {
   return function (field) {
     return function (object) {
+      var mutation = apply(object);
       return function (state) {
-        return _defineProperty({}, field, apply(state[field], object));
+        return _defineProperty({}, field, mutation(state[field]));
       };
     };
   };
@@ -42,53 +43,109 @@ var makeArgumentMutation = function makeArgumentMutation(apply) {
 
 exports.makeArgumentMutation = makeArgumentMutation;
 
-var makeCallbackMutation = function makeCallbackMutation(name) {
-  return makeArgumentMutation(function (value, callback) {
-    return value[name](callback);
-  });
+var decrementState = function decrementState(value) {
+  return value - 1;
 };
 
-exports.makeCallbackMutation = makeCallbackMutation;
-var append = makeArgumentMutation(function (value, object) {
-  return _toConsumableArray(value).concat([object]);
-});
-exports.append = append;
-var concat = makeArgumentMutation(function (value, object) {
-  return _toConsumableArray(value).concat(_toConsumableArray(object));
-});
-exports.concat = concat;
-var cycle = makeArgumentMutation(function (value, object) {
-  return object[(object.indexOf(value) + 1) % object.length];
-});
-exports.cycle = cycle;
-var decrement = makeStandaloneMutation(function (value) {
-  return value - 1;
-});
-exports.decrement = decrement;
-var direct = makeArgumentMutation(function (value, object) {
-  return object;
-});
-exports.direct = direct;
-var filter = makeCallbackMutation("filter");
-exports.filter = filter;
-var increment = makeStandaloneMutation(function (value) {
+exports.decrementState = decrementState;
+
+var incrementState = function incrementState(value) {
   return value + 1;
-});
-exports.increment = increment;
-var map = makeCallbackMutation("map");
-exports.map = map;
-var mutate = makeArgumentMutation(function (value, object) {
-  return _objectSpread({}, value, object);
-});
-exports.mutate = mutate;
-var prepend = makeArgumentMutation(function (value, object) {
-  return [object].concat(_toConsumableArray(value));
-});
-exports.prepend = prepend;
-var toggle = makeStandaloneMutation(function (value) {
+};
+
+exports.incrementState = incrementState;
+
+var toggleState = function toggleState(value) {
   return !value;
-});
+};
+
+exports.toggleState = toggleState;
+var decrement = makeStandaloneMutation(decrementState);
+exports.decrement = decrement;
+var increment = makeStandaloneMutation(incrementState);
+exports.increment = increment;
+var toggle = makeStandaloneMutation(toggleState);
 exports.toggle = toggle;
+
+var appendState = function appendState(object) {
+  return function (value) {
+    return _toConsumableArray(value).concat([object]);
+  };
+};
+
+exports.appendState = appendState;
+
+var concatState = function concatState(object) {
+  return function (value) {
+    return _toConsumableArray(value).concat(_toConsumableArray(object));
+  };
+};
+
+exports.concatState = concatState;
+
+var cycleState = function cycleState(object) {
+  return function (value) {
+    return object[(object.indexOf(value) + 1) % object.length];
+  };
+};
+
+exports.cycleState = cycleState;
+
+var directState = function directState(object) {
+  return function () {
+    return object;
+  };
+};
+
+exports.directState = directState;
+
+var filterState = function filterState(callback) {
+  return function (value) {
+    return value.filter(callback);
+  };
+};
+
+exports.filterState = filterState;
+
+var mapState = function mapState(callback) {
+  return function (value) {
+    return value.map(callback);
+  };
+};
+
+exports.mapState = mapState;
+
+var mutateState = function mutateState(object) {
+  return function (value) {
+    return _objectSpread({}, value, object);
+  };
+};
+
+exports.mutateState = mutateState;
+
+var prependState = function prependState(object) {
+  return function (value) {
+    return [object].concat(_toConsumableArray(value));
+  };
+};
+
+exports.prependState = prependState;
+var append = makeArgumentMutation(appendState);
+exports.append = append;
+var concat = makeArgumentMutation(concatState);
+exports.concat = concat;
+var cycle = makeArgumentMutation(cycleState);
+exports.cycle = cycle;
+var direct = makeArgumentMutation(directState);
+exports.direct = direct;
+var filter = makeArgumentMutation(filterState);
+exports.filter = filter;
+var map = makeArgumentMutation(mapState);
+exports.map = map;
+var mutate = makeArgumentMutation(mutateState);
+exports.mutate = mutate;
+var prepend = makeArgumentMutation(prependState);
+exports.prepend = prepend;
 
 var combineMutations = function combineMutations() {
   for (var _len = arguments.length, mutations = new Array(_len), _key = 0; _key < _len; _key++) {
