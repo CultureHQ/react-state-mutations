@@ -13,7 +13,7 @@ import {
   prepend,
   toggle,
   combineMutations
-} from "../src/index";
+} from "../src/mutations";
 
 test("makeStandaloneMutation", () => {
   const mutation = makeStandaloneMutation(value => value + 50)("object");
