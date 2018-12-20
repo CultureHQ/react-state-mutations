@@ -4007,7 +4007,7 @@ npm-bundled@^1.0.1:
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.3.tgz#7e71703d973af3370a9591bafe3a63aca0be2308"
   integrity sha512-ByQ3oJ/5ETLyglU2+8dBObvhfWXX8dtPZDMePCahptliFX2iIuhyEszyFk401PZUNQH20vvdW5MLjJxkwU80Ow==
 
-npm-packlist@^1.1.6, npm-packlist@^1.1.9:
+npm-packlist@^1.1.6:
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.1.10.tgz#1039db9e985727e464df066f4cf0ab6ef85c398a"
   integrity sha512-AQC0Dyhzn4EiYEfIUjCdMl0JJ61I2ER9ukf/sLxJUcZHfo+VyEfz2rMJgLZSS1v30OxPQe1cN0LZA1xbcaVfWA==
@@ -4214,13 +4214,6 @@ p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
   integrity sha1-y8ec26+P1CKOE/Yh8rGiN8GyB7M=
-
-packfiles@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/packfiles/-/packfiles-0.0.2.tgz#0ed4483d8070b729c32c26dd7027dee80e498d95"
-  integrity sha512-CNMYISaOVxRR/Wp9bREHFNk6DL1d6LlqL8PANKdRMxO9cxZqygm3I3ZY+ubMwV/+H+ys8zxmivH7zTSSwlyS4A==
-  dependencies:
-    npm-packlist "^1.1.9"
 
 parse-glob@^3.0.4:
   version "3.0.4"
