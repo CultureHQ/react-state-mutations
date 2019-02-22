@@ -43,8 +43,12 @@ describe("factories", () => {
   test("makeStandaloneHook", () => {
     const useDouble = makeStandaloneHook(value => value * 2);
 
-    let count, onDouble;
-    testHook(() => ([count, onDouble] = useDouble(1)));
+    let count;
+    let onDouble;
+
+    testHook(() => {
+      ([count, onDouble] = useDouble(1));
+    });
 
     expect(count).toBe(1);
 
@@ -58,8 +62,12 @@ describe("factories", () => {
   test("makeArgumentHook", () => {
     const useAddHook = makeArgumentHook(object => value => value + object);
 
-    let count, onAdd;
-    testHook(() => ([count, onAdd] = useAddHook(0)));
+    let count;
+    let onAdd;
+
+    testHook(() => {
+      ([count, onAdd] = useAddHook(0));
+    });
 
     expect(count).toBe(0);
 
@@ -82,8 +90,12 @@ describe("appending", () => {
   });
 
   test("useAppend", () => {
-    let value, onAppend;
-    testHook(() => ([value, onAppend] = useAppend([1])));
+    let value;
+    let onAppend;
+
+    testHook(() => {
+      ([value, onAppend] = useAppend([1]));
+    });
 
     expect(value).toEqual([1]);
 
@@ -107,8 +119,12 @@ describe("concat-ing", () => {
   });
 
   test("useConcat", () => {
-    let value, onConcat;
-    testHook(() => ([value, onConcat] = useConcat([1])));
+    let value;
+    let onConcat;
+
+    testHook(() => {
+      ([value, onConcat] = useConcat([1]));
+    });
 
     expect(value).toEqual([1]);
 
@@ -131,8 +147,12 @@ describe("prepending", () => {
   });
 
   test("usePrepend", () => {
-    let value, onPrepend;
-    testHook(() => ([value, onPrepend] = usePrepend([3])));
+    let value;
+    let onPrepend;
+
+    testHook(() => {
+      ([value, onPrepend] = usePrepend([3]));
+    });
 
     expect(value).toEqual([3]);
 
@@ -161,8 +181,12 @@ describe("cycling", () => {
   });
 
   test("useCycle", () => {
-    let value, onCycle;
-    testHook(() => ([value, onCycle] = useCycle([1, 2, 3])));
+    let value;
+    let onCycle;
+
+    testHook(() => {
+      ([value, onCycle] = useCycle([1, 2, 3]));
+    });
 
     expect(value).toEqual(1);
 
@@ -188,8 +212,12 @@ describe("decrementing", () => {
   });
 
   test("useDecrement", () => {
-    let count, onDecrement;
-    testHook(() => ([count, onDecrement] = useDecrement(0)));
+    let count;
+    let onDecrement;
+
+    testHook(() => {
+      ([count, onDecrement] = useDecrement(0));
+    });
 
     expect(count).toBe(0);
 
@@ -201,8 +229,11 @@ describe("decrementing", () => {
   });
 
   test("useDecrement default", () => {
-    let count, onDecrement;
-    testHook(() => ([count, onDecrement] = useDecrement()));
+    let count;
+
+    testHook(() => {
+      ([count] = useDecrement());
+    });
 
     expect(count).toBe(0);
   });
@@ -219,8 +250,12 @@ describe("incrementing", () => {
   });
 
   test("useIncrement", () => {
-    let count, onIncrement;
-    testHook(() => ([count, onIncrement] = useIncrement(0)));
+    let count;
+    let onIncrement;
+
+    testHook(() => {
+      ([count, onIncrement] = useIncrement(0));
+    });
 
     expect(count).toBe(0);
 
@@ -232,8 +267,11 @@ describe("incrementing", () => {
   });
 
   test("useIncrement default", () => {
-    let count, onIncrement;
-    testHook(() => ([count, onIncrement] = useIncrement()));
+    let count;
+
+    testHook(() => {
+      ([count] = useIncrement());
+    });
 
     expect(count).toBe(0);
   });
@@ -250,8 +288,12 @@ describe("toggling", () => {
   });
 
   test("useToggle", () => {
-    let value, onToggle;
-    testHook(() => ([value, onToggle] = useToggle(false)));
+    let value;
+    let onToggle;
+
+    testHook(() => {
+      ([value, onToggle] = useToggle(false));
+    });
 
     expect(value).toBe(false);
 
@@ -263,8 +305,11 @@ describe("toggling", () => {
   });
 
   test("useToggle default", () => {
-    let count, onToggle;
-    testHook(() => ([count, onToggle] = useToggle()));
+    let count;
+
+    testHook(() => {
+      ([count] = useToggle());
+    });
 
     expect(count).toBe(true);
   });
@@ -281,8 +326,12 @@ describe("filtering", () => {
   });
 
   test("useFilter", () => {
-    let value, onFilter;
-    testHook(() => ([value, onFilter] = useFilter([1, 2, 3, 4, 5, 6, 7, 8])));
+    let value;
+    let onFilter;
+
+    testHook(() => {
+      ([value, onFilter] = useFilter([1, 2, 3, 4, 5, 6, 7, 8]));
+    });
 
     expect(value).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -294,8 +343,11 @@ describe("filtering", () => {
   });
 
   test("useFilter default", () => {
-    let count, onFilter;
-    testHook(() => ([count, onFilter] = useFilter()));
+    let count;
+
+    testHook(() => {
+      ([count] = useFilter());
+    });
 
     expect(count).toEqual([]);
   });
@@ -312,8 +364,12 @@ describe("mapping", () => {
   });
 
   test("useMap", () => {
-    let value, onMap;
-    testHook(() => ([value, onMap] = useMap([1, 2, 3])));
+    let value;
+    let onMap;
+
+    testHook(() => {
+      ([value, onMap] = useMap([1, 2, 3]));
+    });
 
     expect(value).toEqual([1, 2, 3]);
 
@@ -325,8 +381,11 @@ describe("mapping", () => {
   });
 
   test("useMap default", () => {
-    let count, onMap;
-    testHook(() => ([count, onMap] = useMap()));
+    let count;
+
+    testHook(() => {
+      ([count] = useMap());
+    });
 
     expect(count).toEqual([]);
   });
