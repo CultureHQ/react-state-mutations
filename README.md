@@ -116,7 +116,7 @@ class Counter extends Component {
 export default Counter;
 ```
 
-You can alternatively use this in conjunction with the `useState` feature in React. To get the equivalent as the above example working, you can use:
+You can alternatively use this library in conjunction with the `useState` feature in React. To get the equivalent as the above example working, you can use:
 
 ```javascript
 import React, { useState, useCallback } from "react";
@@ -124,24 +124,12 @@ import { incrementState } from "react-state-mutations";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  const onClick = useCallback(() => setCount(incrementState));
+  const onClick = useCallback(() => {
+    setCount(incrementState);
+    setCount(incrementState);
+  });
 
   return <button type="button" onClick={onClick}>{count}</button>;
-};
-
-export default Counter;
-```
-
-Finally, most of the mutations below also support a built in hook, so this code could be further simplified with:
-
-```javascript
-import React, { useState, useCallback } from "react";
-import { useIncrementState } from "react-state-mutations";
-
-const Counter = () => {
-  const [count, onIncrement] = useIncrementState(0);
-
-  return <button type="button" onClick={onIncrement}>{count}</button>;
 };
 
 export default Counter;
