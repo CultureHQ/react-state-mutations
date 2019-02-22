@@ -18,6 +18,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
   - `useToggle`
 - Factories for creating your own hooks, including `makeStandaloneHook` and `makeArgumentHook`.
 
+### Changed
+- `react` and `react-dom` are now peer dependencies.
+
 ## [1.0.0] - 2018-11-13
 ### Added
 - The single value equivalents of all of the existing mutations, by appending `State` to the name of each. e.g., there is now an equivalent mutation for `append` that will work with a single value called `appendState`. This allows the use of this library with hooks, i.e.,
