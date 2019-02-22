@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Hooks for most of the existing mutations, including:
+  - `useAppend`
+  - `useConcat`
+  - `useCycle`
+  - `useDecrement`
+  - `useFilter`
+  - `useIncrement`
+  - `useMap`
+  - `usePrepend`
+  - `useToggle`
+- Factories for creating your own hooks, including `makeStandaloneHook` and `makeArgumentHook`.
+
+### Changed
+- `react` and `react-dom` are now peer dependencies.
 
 ## [1.0.0] - 2018-11-13
 ### Added

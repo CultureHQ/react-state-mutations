@@ -1,12 +1,26 @@
+import { useCallback, useState } from "react";
+
 export const makeStandaloneMutation = apply => field => {
   const mutation = state => ({ [field]: apply(state[field]) });
   mutation.standalone = true;
   return mutation;
 };
 
+export const makeStandaloneHook = (apply, defaultValue) => (initialValue = defaultValue) => {
+  const [value, setValue] = useState(initialValue);
+  const onMutate = useCallback(() => setValue(apply), []);
+  return [value, onMutate];
+};
+
 export const makeArgumentMutation = apply => field => object => {
   const mutation = apply(object);
   return state => ({ [field]: mutation(state[field]) });
+};
+
+export const makeArgumentHook = (apply, defaultValue) => (initialValue = defaultValue) => {
+  const [value, setValue] = useState(initialValue);
+  const onMutate = useCallback(object => setValue(apply(object)), []);
+  return [value, onMutate];
 };
 
 export const decrementState = value => value - 1;
@@ -16,6 +30,10 @@ export const toggleState = value => !value;
 export const decrement = makeStandaloneMutation(decrementState);
 export const increment = makeStandaloneMutation(incrementState);
 export const toggle = makeStandaloneMutation(toggleState);
+
+export const useDecrement = makeStandaloneHook(decrementState, 0);
+export const useIncrement = makeStandaloneHook(incrementState, 0);
+export const useToggle = makeStandaloneHook(toggleState, true);
 
 export const appendState = object => value => [...value, object];
 export const concatState = object => value => [...value, ...object];
@@ -34,6 +52,21 @@ export const filter = makeArgumentMutation(filterState);
 export const map = makeArgumentMutation(mapState);
 export const mutate = makeArgumentMutation(mutateState);
 export const prepend = makeArgumentMutation(prependState);
+
+export const useAppend = makeArgumentHook(appendState, []);
+export const useConcat = makeArgumentHook(concatState, []);
+export const useFilter = makeArgumentHook(filterState, []);
+export const useMap = makeArgumentHook(mapState, []);
+export const usePrepend = makeArgumentHook(prependState, []);
+
+export const useCycle = object => {
+  const [value, setValue] = useState(object[0]);
+
+  const cycleValue = useCallback(cycleState(object), [object]);
+  const onCycle = useCallback(() => setValue(cycleValue), [cycleValue]);
+
+  return [value, onCycle];
+};
 
 export const combineMutations = (...mutations) => {
   const normalized = mutations.map(mutation => {

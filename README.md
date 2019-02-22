@@ -132,6 +132,21 @@ const Counter = () => {
 export default Counter;
 ```
 
+Finally, most of the mutations below also support a built in hook, so this code could be further simplified with:
+
+```javascript
+import React, { useState, useCallback } from "react";
+import { useIncrementState } from "react-state-mutations";
+
+const Counter = () => {
+  const [count, onIncrement] = useIncrementState(0);
+
+  return <button type="button" onClick={onIncrement}>{count}</button>;
+};
+
+export default Counter;
+```
+
 ## Getting started
 
 Install this package through `npm` (`npm install react-state-mutations --save`) or `yarn` (`yarn add react-state-mutations`). You can then import and use the mutations from within your components.
@@ -150,7 +165,7 @@ In addition with the ability to create your own mutations, this package ships wi
 - [`prepend`](#prepend)
 - [`toggle`](#toggle)
 
-There is also an equivalent version of each of these mutations that works on standalone values. This can be used in conjunction with React's `useState` to manipulate state in a safe way. The equivalent version is named the same, with `State` appended onto the end. i.e., the equivalent mutation for `toggle` is `toggleState`, which will effectively perform `value => !value`.
+There is also an equivalent version of each of these mutations that works on standalone values. This can be used in conjunction with React's `useState` to manipulate state in a safe way. The equivalent version is named the same, with `State` appended onto the end. i.e., the equivalent mutation for `toggle` is `toggleState`, which will effectively perform `value => !value`. Finally, there are hooks built in that use those mutations, so in `useToggle` for the above example.
 
 ### `append`
 
@@ -176,6 +191,22 @@ const nextState = appendState({ name: "Ron" })(prevState);
 // => [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }]
 ```
 
+With hooks:
+
+```javascript
+import { useAppend } from "react-state-mutations";
+
+const Students = () => {
+  const [students, onAppend] = useAppend([
+    { name: "Harry" },
+    { name: "Hermione" }
+  ]);
+
+  // sometime later...
+  onAppend({ name: "Ron" })
+};
+```
+
 ### `concat`
 
 Concatentate two lists, as in the example:
@@ -198,6 +229,22 @@ import { concatState } from "react-state-mutations";
 const prevState = [{ name: "Harry" }, { name: "Hermione" }];
 const nextState = concatState([{ name: "Ron" }, { name: "Ginny" }])(prevState);
 // => [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }, { name: "Ginny" }]
+```
+
+With hooks:
+
+```javascript
+import { useConcat } from "react-state-mutations";
+
+const Students = () => {
+  const [students, onConcat] = useConcat([
+    { name: "Harry" },
+    { name: "Hermione" }
+  ]);
+
+  // sometime later...
+  onConcat([{ name: "Ron" }, { name: "Ginny" }]);
+};
 ```
 
 ### `cycle`
@@ -249,6 +296,21 @@ nextState = visitNextHogwartsHouse(nextState);
 // => "Gryffindor"
 ```
 
+With hooks:
+
+```javascript
+import { useCycle } from "react-state-mutations";
+
+const HogwartsHouses = () => {
+  const [house, onCycle] = useCycle([
+    "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+  ]);
+
+  // sometime later...
+  onCycle()
+};
+```
+
 ### `decrement`
 
 Decrements a value, as in the example:
@@ -271,6 +333,19 @@ import { decrementState } from "react-state-mutations";
 const prevState = 7;
 const nextState = decrementState(prevState);
 // => 6
+```
+
+With hooks:
+
+```javascript
+import { useDecrement } from "react-state-mutations";
+
+const Horcruxes = () => {
+  const [count, onDecrement] = useDecrement(7);
+
+  // sometime later...
+  onDecrement();
+};
 ```
 
 ### `direct`
@@ -339,6 +414,23 @@ const nextState = findGryffindors(prevState);
 // => [{ name: "Harry", house: "Gryffindor" }]
 ```
 
+With hooks:
+
+```javascript
+import { useFilter } from "react-state-mutations";
+
+const Students = () => {
+  const [students, onFilter] = useFilter([
+    { name: "Harry", house: "Gryffindor" },
+    { name: "Cedric", house: "Hufflepuff" },
+    { name: "Pansy", house: "Slytherin" }
+  ]);
+
+  // sometime later...
+  onFilter(({ house }) => house === "Gryffindor");
+};
+```
+
 ### `increment`
 
 Increments a value, as in the example:
@@ -361,6 +453,19 @@ import { incrementState } from "react-state-mutations";
 const prevState = 2000;
 const nextState = incrementState(prevState);
 // => 2001
+```
+
+With hooks:
+
+```javascript
+import { useIncrement } from "react-state-mutations";
+
+const Nimbus = () => {
+  const [version, onIncrement] = useIncrement(2000);
+
+  // sometime later...
+  onIncrement()
+};
 ```
 
 ### `map`
@@ -402,6 +507,22 @@ const prevState = [
 
 const nextState = graduateStudents(prevState);
 // => [{ name: "Harry", year: 3 }, { name: "Ginny", year: 2 }]
+```
+
+With hooks:
+
+```javascript
+import { useMap } from "react-state-mutations";
+
+const Students = () => {
+  const [students, onMap] = useMap([
+    { name: "Harry", year: 2 },
+    { name: "Ginny", year: 1 }
+  ]);
+
+  // sometime later...
+  onMap(({ year, ...rest }) => ({ year + 1, ...rest }));
+};
 ```
 
 ### `mutate`
@@ -455,6 +576,22 @@ const nextState = prependState({ name: "Ron" })(prevState);
 // => [{ name: "Ron" }, { name: "Harry" }, { name: "Hermione" }]
 ```
 
+With hooks:
+
+```javascript
+import { usePrepend } from "react-state-mutations";
+
+const Students = () => {
+  const [students, onPrepend] = usePrepend([
+    { name: "Harry" },
+    { name: "Hermione" }
+  ]);
+
+  // sometime later...
+  onPrepend({ name: "Ron" });
+};
+```
+
 ### `toggle`
 
 Toggles a boolean value, as in the example:
@@ -479,9 +616,22 @@ const nextState = toggleState(prevState);
 // => true
 ```
 
+With hooks:
+
+```javascript
+import { useToggle } from "react-state-mutations";
+
+const WizardStatus = () => {
+  const [isWizard, onToggle] = useToggle(false);
+
+  // sometime later, with Hagrid...
+  onToggle();
+};
+```
+
 ## Advanced
 
-There are a couple of advanced functions, both for creating your own mutations, and combining multiple mutations into one function.
+There are a couple of advanced functions, for creating your own mutations, combining multiple mutations into one function, and creating your own hooks.
 
 ### `makeStandaloneMutation`
 
@@ -569,4 +719,57 @@ const startFlying = combineMutations(
 const prevState = { height: 0, flying: false };
 const nextState = startFlying(100)(prevState);
 // => { height: 100, flying: true };
+```
+
+### `makeStandaloneHook`
+
+Creates a reusable hook based on a mutation that requires no further input. `makeStandaloneHook` takes two arguments, the first behind the mutation and the second being the default initial value. For example, if you wanted to create a hook that would always multiply the previous value by 2, you could:
+
+```javascript
+import { makeStandaloneHook } from "react-state-mutations";
+
+const useDouble = makeStandaloneHook(value => value * 2, 1);
+```
+
+Then, you could use `useDouble` in your components as any other hooks, as in:
+
+```javascript
+const DoubleDouble = () => {
+  const [value, onDouble] = useDouble();
+
+  return <button type="button" onClick={onDouble}>{value}</button>;
+};
+```
+
+You can also pass a value to `useDouble` in this example to start at a certain value.
+
+### `makeArgumentHook`
+
+Creates a reusable hook based on a mutation that requires one argument. `makeArgumentHook` takes two arguments (the same as `makeStandaloneHook`), the first behind the mutation and the second being the default initial value. For example, if you wanted to create a hook that would count up values in succession, you could:
+
+```javascript
+import { makeArgumentHook } from "react-state-mutations";
+
+const useAdder = makeArgumentHook(object => value => value + object, 0);
+```
+
+Then you could use `useAdder` in your components as any other hooks, as in:
+
+```javascript
+import { useCallback, useState } from "react";
+
+const Sum = () => {
+  const [number, setNumber] = useState("");
+  const onChange = useCallback(event => setNumber(event.target.value), []);
+
+  const [value, onAdd] = useAdder();
+  const onClick = useCallback(() => onAdd(number), [number]);
+
+  return (
+    <>
+      <input type="number" value={value} onChange={onChange} />
+      <button type="button" onClick={onClick}>{Add}</button>
+    </>
+  );
+};
 ```

@@ -19,6 +19,10 @@
     "url": "https://github.com/CultureHQ/react-state-mutations/issues"
   },
   "homepage": "https://github.com/CultureHQ/react-state-mutations#readme",
+  "peerDependencies": {
+    "react": "^16",
+    "react-dom": "^16"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",
@@ -30,6 +34,9 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.4",
-    "jest": "^24.1.0"
+    "jest": "^24.1.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-testing-library": "^5.9.0"
   }
 }
