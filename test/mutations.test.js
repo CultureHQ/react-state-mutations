@@ -5,17 +5,17 @@ import {
   makeArgumentMutation,
   makeStandaloneHook,
   makeArgumentHook,
-  append, useAppendState,
-  concat, useConcatState,
-  cycle, useCycleState,
-  decrement, useDecrementState,
+  append, useAppend,
+  concat, useConcat,
+  cycle, useCycle,
+  decrement, useDecrement,
   direct,
-  filter, useFilterState,
-  increment, useIncrementState,
-  map, useMapState,
+  filter, useFilter,
+  increment, useIncrement,
+  map, useMap,
   mutate,
-  prepend, usePrependState,
-  toggle, useToggleState,
+  prepend, usePrepend,
+  toggle, useToggle,
   combineMutations
 } from "../src/mutations";
 
@@ -41,10 +41,10 @@ describe("factories", () => {
   });
 
   test("makeStandaloneHook", () => {
-    const useDoubleState = makeStandaloneHook(value => value * 2);
+    const useDouble = makeStandaloneHook(value => value * 2);
 
     let count, onDouble;
-    testHook(() => ([count, onDouble] = useDoubleState(1)));
+    testHook(() => ([count, onDouble] = useDouble(1)));
 
     expect(count).toBe(1);
 
@@ -81,9 +81,9 @@ describe("appending", () => {
     expect(prevState.objects.length).toEqual(3);
   });
 
-  test("useAppendState", () => {
+  test("useAppend", () => {
     let value, onAppend;
-    testHook(() => ([value, onAppend] = useAppendState([1])));
+    testHook(() => ([value, onAppend] = useAppend([1])));
 
     expect(value).toEqual([1]);
 
@@ -106,9 +106,9 @@ describe("concat-ing", () => {
     expect(prevState.objects.length).toEqual(3);
   });
 
-  test("useConcatState", () => {
+  test("useConcat", () => {
     let value, onConcat;
-    testHook(() => ([value, onConcat] = useConcatState([1])));
+    testHook(() => ([value, onConcat] = useConcat([1])));
 
     expect(value).toEqual([1]);
 
@@ -130,9 +130,9 @@ describe("prepending", () => {
     expect(prevState.objects.length).toEqual(3);
   });
 
-  test("usePrependState", () => {
+  test("usePrepend", () => {
     let value, onPrepend;
-    testHook(() => ([value, onPrepend] = usePrependState([3])));
+    testHook(() => ([value, onPrepend] = usePrepend([3])));
 
     expect(value).toEqual([3]);
 
@@ -160,9 +160,9 @@ describe("cycling", () => {
     expect(nextState.object).toEqual("foo");
   });
 
-  test("useCycleState", () => {
+  test("useCycle", () => {
     let value, onCycle;
-    testHook(() => ([value, onCycle] = useCycleState([1, 2, 3])));
+    testHook(() => ([value, onCycle] = useCycle([1, 2, 3])));
 
     expect(value).toEqual(1);
 
@@ -187,9 +187,9 @@ describe("decrementing", () => {
     expect(prevState.object).toEqual(1);
   });
 
-  test("useDecrementState", () => {
+  test("useDecrement", () => {
     let count, onDecrement;
-    testHook(() => ([count, onDecrement] = useDecrementState(0)));
+    testHook(() => ([count, onDecrement] = useDecrement(0)));
 
     expect(count).toBe(0);
 
@@ -200,9 +200,9 @@ describe("decrementing", () => {
     expect(count).toBe(-2);
   });
 
-  test("useDecrementState default", () => {
+  test("useDecrement default", () => {
     let count, onDecrement;
-    testHook(() => ([count, onDecrement] = useDecrementState()));
+    testHook(() => ([count, onDecrement] = useDecrement()));
 
     expect(count).toBe(0);
   });
@@ -218,9 +218,9 @@ describe("incrementing", () => {
     expect(prevState.object).toEqual(1);
   });
 
-  test("useIncrementState", () => {
+  test("useIncrement", () => {
     let count, onIncrement;
-    testHook(() => ([count, onIncrement] = useIncrementState(0)));
+    testHook(() => ([count, onIncrement] = useIncrement(0)));
 
     expect(count).toBe(0);
 
@@ -231,9 +231,9 @@ describe("incrementing", () => {
     expect(count).toBe(2);
   });
 
-  test("useIncrementState default", () => {
+  test("useIncrement default", () => {
     let count, onIncrement;
-    testHook(() => ([count, onIncrement] = useIncrementState()));
+    testHook(() => ([count, onIncrement] = useIncrement()));
 
     expect(count).toBe(0);
   });
@@ -249,9 +249,9 @@ describe("toggling", () => {
     expect(prevState.object).toBe(true);
   });
 
-  test("useToggleState", () => {
+  test("useToggle", () => {
     let value, onToggle;
-    testHook(() => ([value, onToggle] = useToggleState(false)));
+    testHook(() => ([value, onToggle] = useToggle(false)));
 
     expect(value).toBe(false);
 
@@ -262,9 +262,9 @@ describe("toggling", () => {
     expect(value).toBe(false);
   });
 
-  test("useToggleState default", () => {
+  test("useToggle default", () => {
     let count, onToggle;
-    testHook(() => ([count, onToggle] = useToggleState()));
+    testHook(() => ([count, onToggle] = useToggle()));
 
     expect(count).toBe(true);
   });
@@ -280,9 +280,9 @@ describe("filtering", () => {
     expect(prevState.objects).toEqual([1, 2, 3, 4, 5, 6]);
   });
 
-  test("useFilterState", () => {
+  test("useFilter", () => {
     let value, onFilter;
-    testHook(() => ([value, onFilter] = useFilterState([1, 2, 3, 4, 5, 6, 7, 8])));
+    testHook(() => ([value, onFilter] = useFilter([1, 2, 3, 4, 5, 6, 7, 8])));
 
     expect(value).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 
@@ -293,9 +293,9 @@ describe("filtering", () => {
     expect(value).toEqual([1, 2]);
   });
 
-  test("useFilterState default", () => {
+  test("useFilter default", () => {
     let count, onFilter;
-    testHook(() => ([count, onFilter] = useFilterState()));
+    testHook(() => ([count, onFilter] = useFilter()));
 
     expect(count).toEqual([]);
   });
@@ -311,9 +311,9 @@ describe("mapping", () => {
     expect(prevState.objects).toEqual([1, 2, 3]);
   });
 
-  test("useMapState", () => {
+  test("useMap", () => {
     let value, onMap;
-    testHook(() => ([value, onMap] = useMapState([1, 2, 3])));
+    testHook(() => ([value, onMap] = useMap([1, 2, 3])));
 
     expect(value).toEqual([1, 2, 3]);
 
@@ -324,9 +324,9 @@ describe("mapping", () => {
     expect(value).toEqual([8, 16, 24]);
   });
 
-  test("useMapState default", () => {
+  test("useMap default", () => {
     let count, onMap;
-    testHook(() => ([count, onMap] = useMapState()));
+    testHook(() => ([count, onMap] = useMap()));
 
     expect(count).toEqual([]);
   });

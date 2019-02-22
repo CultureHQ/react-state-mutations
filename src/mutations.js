@@ -31,9 +31,9 @@ export const decrement = makeStandaloneMutation(decrementState);
 export const increment = makeStandaloneMutation(incrementState);
 export const toggle = makeStandaloneMutation(toggleState);
 
-export const useDecrementState = makeStandaloneHook(decrementState, 0);
-export const useIncrementState = makeStandaloneHook(incrementState, 0);
-export const useToggleState = makeStandaloneHook(toggleState, true);
+export const useDecrement = makeStandaloneHook(decrementState, 0);
+export const useIncrement = makeStandaloneHook(incrementState, 0);
+export const useToggle = makeStandaloneHook(toggleState, true);
 
 export const appendState = object => value => [...value, object];
 export const concatState = object => value => [...value, ...object];
@@ -53,13 +53,13 @@ export const map = makeArgumentMutation(mapState);
 export const mutate = makeArgumentMutation(mutateState);
 export const prepend = makeArgumentMutation(prependState);
 
-export const useAppendState = makeArgumentHook(appendState, []);
-export const useConcatState = makeArgumentHook(concatState, []);
-export const useFilterState = makeArgumentHook(filterState, []);
-export const useMapState = makeArgumentHook(mapState, []);
-export const usePrependState = makeArgumentHook(prependState, []);
+export const useAppend = makeArgumentHook(appendState, []);
+export const useConcat = makeArgumentHook(concatState, []);
+export const useFilter = makeArgumentHook(filterState, []);
+export const useMap = makeArgumentHook(mapState, []);
+export const usePrepend = makeArgumentHook(prependState, []);
 
-export const useCycleState = object => {
+export const useCycle = object => {
   const [value, setValue] = useState(object[0]);
 
   const cycleValue = useCallback(cycleState(object), [object]);
