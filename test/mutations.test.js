@@ -1,4 +1,4 @@
-import { act, cleanup, testHook } from "react-testing-library";
+import { act, cleanup, renderHook } from "react-hooks-testing-library";
 
 import {
   makeStandaloneMutation,
@@ -46,7 +46,7 @@ describe("factories", () => {
     let count;
     let onDouble;
 
-    testHook(() => {
+    renderHook(() => {
       ([count, onDouble] = useDouble(1));
     });
 
@@ -65,7 +65,7 @@ describe("factories", () => {
     let count;
     let onAdd;
 
-    testHook(() => {
+    renderHook(() => {
       ([count, onAdd] = useAddHook(0));
     });
 
@@ -93,7 +93,7 @@ describe("appending", () => {
     let value;
     let onAppend;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onAppend] = useAppend([1]));
     });
 
@@ -122,7 +122,7 @@ describe("concat-ing", () => {
     let value;
     let onConcat;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onConcat] = useConcat([1]));
     });
 
@@ -150,7 +150,7 @@ describe("prepending", () => {
     let value;
     let onPrepend;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onPrepend] = usePrepend([3]));
     });
 
@@ -184,7 +184,7 @@ describe("cycling", () => {
     let value;
     let onCycle;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onCycle] = useCycle([1, 2, 3]));
     });
 
@@ -215,7 +215,7 @@ describe("decrementing", () => {
     let count;
     let onDecrement;
 
-    testHook(() => {
+    renderHook(() => {
       ([count, onDecrement] = useDecrement(0));
     });
 
@@ -231,7 +231,7 @@ describe("decrementing", () => {
   test("useDecrement default", () => {
     let count;
 
-    testHook(() => {
+    renderHook(() => {
       ([count] = useDecrement());
     });
 
@@ -253,7 +253,7 @@ describe("incrementing", () => {
     let count;
     let onIncrement;
 
-    testHook(() => {
+    renderHook(() => {
       ([count, onIncrement] = useIncrement(0));
     });
 
@@ -269,7 +269,7 @@ describe("incrementing", () => {
   test("useIncrement default", () => {
     let count;
 
-    testHook(() => {
+    renderHook(() => {
       ([count] = useIncrement());
     });
 
@@ -291,7 +291,7 @@ describe("toggling", () => {
     let value;
     let onToggle;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onToggle] = useToggle(false));
     });
 
@@ -307,7 +307,7 @@ describe("toggling", () => {
   test("useToggle default", () => {
     let count;
 
-    testHook(() => {
+    renderHook(() => {
       ([count] = useToggle());
     });
 
@@ -329,7 +329,7 @@ describe("filtering", () => {
     let value;
     let onFilter;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onFilter] = useFilter([1, 2, 3, 4, 5, 6, 7, 8]));
     });
 
@@ -345,7 +345,7 @@ describe("filtering", () => {
   test("useFilter default", () => {
     let count;
 
-    testHook(() => {
+    renderHook(() => {
       ([count] = useFilter());
     });
 
@@ -367,7 +367,7 @@ describe("mapping", () => {
     let value;
     let onMap;
 
-    testHook(() => {
+    renderHook(() => {
       ([value, onMap] = useMap([1, 2, 3]));
     });
 
@@ -383,7 +383,7 @@ describe("mapping", () => {
   test("useMap default", () => {
     let count;
 
-    testHook(() => {
+    renderHook(() => {
       ([count] = useMap());
     });
 
