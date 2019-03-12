@@ -8,7 +8,7 @@ export const makeStandaloneMutation = apply => field => {
 
 export const makeStandaloneHook = (apply, defaultValue) => (initialValue = defaultValue) => {
   const [value, setValue] = useState(initialValue);
-  const onMutate = useCallback(() => setValue(apply), []);
+  const onMutate = useCallback(() => setValue(apply), [setValue]);
   return [value, onMutate];
 };
 
@@ -19,7 +19,7 @@ export const makeArgumentMutation = apply => field => object => {
 
 export const makeArgumentHook = (apply, defaultValue) => (initialValue = defaultValue) => {
   const [value, setValue] = useState(initialValue);
-  const onMutate = useCallback(object => setValue(apply(object)), []);
+  const onMutate = useCallback(object => setValue(apply(object)), [setValue]);
   return [value, onMutate];
 };
 

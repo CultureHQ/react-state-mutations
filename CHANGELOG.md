@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [1.1.1] - 2019-03-12
+### Changed
+- Added the necessary deps for the `useCallback` hook inside the `makeStandaloneHook` and `makeArgumentHook` functions.
+
 ## [1.1.0] - 2019-02-22
 ### Added
 - Hooks for most of the existing mutations, including:
@@ -76,7 +80,8 @@ const StudentList = () => {
 ### Added
 - The `filter` mutation for filtering a list of objects.
 
-[Unreleased]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/CultureHQ/react-state-mutations/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/CultureHQ/react-state-mutations/compare/v0.3.0...v1.0.0
 [0.3.0]: https://github.com/CultureHQ/react-state-mutations/compare/v0.2.0...v0.3.0

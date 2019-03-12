@@ -51,7 +51,7 @@ var makeStandaloneHook = function makeStandaloneHook(apply, defaultValue) {
 
     var onMutate = (0, _react.useCallback)(function () {
       return setValue(apply);
-    }, []);
+    }, [setValue]);
     return [value, onMutate];
   };
 };
@@ -82,7 +82,7 @@ var makeArgumentHook = function makeArgumentHook(apply, defaultValue) {
 
     var onMutate = (0, _react.useCallback)(function (object) {
       return setValue(apply(object));
-    }, []);
+    }, [setValue]);
     return [value, onMutate];
   };
 };
