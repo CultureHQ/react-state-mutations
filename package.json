@@ -27,12 +27,12 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.1",
-    "@culturehq/eslint-config": "^1.0.2",
+    "@culturehq/eslint-config": "^1.1.0",
     "babel-jest": "^24.5.0",
-    "eslint": "^5.15.3",
+    "eslint": "^5.16.0",
     "jest": "^24.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hooks-testing-library": "^0.3.8"
+    "react-hooks-testing-library": "^0.4.0"
   }
 }
