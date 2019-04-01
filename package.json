@@ -33,6 +33,6 @@
     "jest": "^24.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hooks-testing-library": "^0.3.8"
+    "react-hooks-testing-library": "^0.4.0"
   }
 }
