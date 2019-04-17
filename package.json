@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "module": "src/mutations.js",
   "scripts": {
-    "build": "rm -r dist/* && yarn babel --out-file dist/main.js src",
+    "build": "rm -r dist/* && yarn babel --out-file dist/main.js --ignore '**/__tests__' src",
     "lint": "chq-scripts lint",
     "test": "chq-scripts test"
   },
@@ -30,6 +30,6 @@
     "@culturehq/scripts": "^0.1.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-hooks-testing-library": "^0.4.0"
+    "react-hooks-testing-library": "^0.4.1"
   }
 }

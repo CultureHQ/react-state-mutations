@@ -17,7 +17,7 @@ import {
   prepend, usePrepend,
   toggle, useToggle,
   combineMutations
-} from "../src/mutations";
+} from "../mutations";
 
 afterEach(cleanup);
 
