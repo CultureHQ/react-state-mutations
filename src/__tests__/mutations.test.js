@@ -1,4 +1,4 @@
-import { act, cleanup, renderHook } from "react-hooks-testing-library";
+import { act, renderHook } from "react-hooks-testing-library";
 
 import {
   makeStandaloneMutation,
@@ -18,8 +18,6 @@ import {
   toggle, useToggle,
   combineMutations
 } from "../mutations";
-
-afterEach(cleanup);
 
 describe("factories", () => {
   test("makeStandaloneMutation", () => {
