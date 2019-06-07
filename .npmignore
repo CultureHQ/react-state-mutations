@@ -2,3 +2,4 @@
 /coverage/
 /test/
 /yarn.lock
+/yarn-error.log
