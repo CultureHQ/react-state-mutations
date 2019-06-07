@@ -23,7 +23,11 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <button type="button" onClick={this.handleClick}>{count}</button>;
+    return (
+      <button type="button" onClick={this.handleClick}>
+        {count}
+      </button>
+    );
   }
 }
 
@@ -50,7 +54,11 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <button type="button" onClick={this.handleClick}>{count}</button>;
+    return (
+      <button type="button" onClick={this.handleClick}>
+        {count}
+      </button>
+    );
   }
 }
 
@@ -79,7 +87,11 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <button type="button" onClick={this.handleClick}>{count}</button>;
+    return (
+      <button type="button" onClick={this.handleClick}>
+        {count}
+      </button>
+    );
   }
 }
 
@@ -109,7 +121,11 @@ class Counter extends Component {
 
   render() {
     const { count } = this.state;
-    return <button type="button" onClick={this.handleClick}>{count}</button>;
+    return (
+      <button type="button" onClick={this.handleClick}>
+        {count}
+      </button>
+    );
   }
 }
 
@@ -129,7 +145,11 @@ const Counter = () => {
     setCount(incrementState);
   });
 
-  return <button type="button" onClick={onClick}>{count}</button>;
+  return (
+    <button type="button" onClick={onClick}>
+      {count}
+    </button>
+  );
 };
 
 export default Counter;
@@ -191,7 +211,7 @@ const Students = () => {
   ]);
 
   // sometime later...
-  onAppend({ name: "Ron" })
+  onAppend({ name: "Ron" });
 };
 ```
 
@@ -205,7 +225,9 @@ import { concat } from "react-state-mutations";
 const concatStudents = concat("students");
 
 const prevState = { students: [{ name: "Harry" }, { name: "Hermione" }] };
-const nextState = concatStudents([{ name: "Ron" }, { name: "Ginny" }])(prevState);
+const nextState = concatStudents([{ name: "Ron" }, { name: "Ginny" }])(
+  prevState
+);
 // => { students: [{ name: "Harry" }, { name: "Hermione" }, { name: "Ron" }, { name: "Ginny" }] }
 ```
 
@@ -244,7 +266,10 @@ import { cycle } from "react-state-mutations";
 
 const cycleHouse = cycle("house");
 const visitNextHogwartsHouse = cycleHouse([
-  "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+  "Gryffindor",
+  "Hufflepuff",
+  "Ravenclaw",
+  "Slytherin"
 ]);
 
 const prevState = { house: "Gryffindor" };
@@ -267,7 +292,10 @@ With single values:
 import { cycleState } from "react-state-mutations";
 
 const visitNextHogwartsHouse = cycleState([
-  "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+  "Gryffindor",
+  "Hufflepuff",
+  "Ravenclaw",
+  "Slytherin"
 ]);
 
 const prevState = "Gryffindor";
@@ -291,11 +319,14 @@ import { useCycle } from "react-state-mutations";
 
 const HogwartsHouses = () => {
   const [house, onCycle] = useCycle([
-    "Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"
+    "Gryffindor",
+    "Hufflepuff",
+    "Ravenclaw",
+    "Slytherin"
   ]);
 
   // sometime later...
-  onCycle()
+  onCycle();
 };
 ```
 
@@ -452,7 +483,7 @@ const Nimbus = () => {
   const [version, onIncrement] = useIncrement(2000);
 
   // sometime later...
-  onIncrement()
+  onIncrement();
 };
 ```
 
@@ -628,9 +659,12 @@ Creates a mutation that modifies state. Takes as an argument a function that acc
 ```javascript
 import { makeStandaloneMutation } from "react-state-mutations";
 
-const encrypt = makeStandaloneMutation(value => (
-  value.split("").reverse().join("")
-));
+const encrypt = makeStandaloneMutation(value =>
+  value
+    .split("")
+    .reverse()
+    .join("")
+);
 
 const encryptName = encrypt("name");
 
@@ -725,7 +759,11 @@ Then, you could use `useDouble` in your components as any other hooks, as in:
 const DoubleDouble = () => {
   const [value, onDouble] = useDouble();
 
-  return <button type="button" onClick={onDouble}>{value}</button>;
+  return (
+    <button type="button" onClick={onDouble}>
+      {value}
+    </button>
+  );
 };
 ```
 
@@ -756,7 +794,9 @@ const Sum = () => {
   return (
     <>
       <input type="number" value={value} onChange={onChange} />
-      <button type="button" onClick={onClick}>{Add}</button>
+      <button type="button" onClick={onClick}>
+        Add
+      </button>
     </>
   );
 };
