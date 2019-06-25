@@ -27,7 +27,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@culturehq/scripts": "^1.0.0",
+    "@culturehq/scripts": "^2.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-hooks-testing-library": "^0.6.0",
