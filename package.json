@@ -25,12 +25,15 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.0",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "@culturehq/scripts": "^2.1.0",
     "@testing-library/react-hooks": "^1.0.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6"
+  },
+  "resolutions": {
+    "@babel/core": "^7.5.4"
   }
 }

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+### Changed
+
+- Use `Array.prototype.concat` instead of array spread so that babel will inject fewer helpers into the final bundle
+
 ## [1.1.2] - 2019-06-07
 
 ### Changed

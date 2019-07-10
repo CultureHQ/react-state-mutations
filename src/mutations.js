@@ -35,14 +35,14 @@ export const useDecrement = makeStandaloneHook(decrementState, 0);
 export const useIncrement = makeStandaloneHook(incrementState, 0);
 export const useToggle = makeStandaloneHook(toggleState, true);
 
-export const appendState = object => value => [...value, object];
-export const concatState = object => value => [...value, ...object];
+export const appendState = object => value => value.concat(object);
+export const concatState = object => value => value.concat(object);
 export const cycleState = object => value => object[(object.indexOf(value) + 1) % object.length];
 export const directState = object => () => object;
 export const filterState = callback => value => value.filter(callback);
 export const mapState = callback => value => value.map(callback);
 export const mutateState = object => value => ({ ...value, ...object });
-export const prependState = object => value => [object, ...value];
+export const prependState = object => value => [object].concat(value);
 
 export const append = makeArgumentMutation(appendState);
 export const concat = makeArgumentMutation(concatState);
