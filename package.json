@@ -28,10 +28,10 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@culturehq/scripts": "^2.1.0",
-    "@testing-library/react-hooks": "^1.0.4",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-test-renderer": "^16.8.6"
+    "@testing-library/react-hooks": "^2.0.1",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-test-renderer": "^16.9.0"
   },
   "resolutions": {
     "@babel/core": "^7.5.5"
