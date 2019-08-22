@@ -1,17 +1,21 @@
 import { useCallback, useState } from "react";
 
-export const makeStandaloneMutation = apply => field => {
-  const mutation = state => ({ [field]: apply(state[field]) });
+type Apply<T> = (value: T) => T;
+type State<T> = { [key: string]: T };
+
+export const makeStandaloneMutation = <T extends {}>(apply: Apply<T>) => (field: string) => {
+  const mutation = (state: State<T>) => ({ [field]: apply(state[field]) });
   mutation.standalone = true;
   return mutation;
 };
 
-export const makeStandaloneHook = (apply, defaultValue) => (initialValue = defaultValue) => {
-  const [value, setValue] = useState(initialValue);
+export const makeStandaloneHook = <T extends {}>(apply: Apply<T>, defaultValue: T) => (initialValue = defaultValue) => {
+  const [value, setValue] = useState<T>(initialValue);
   const onMutate = useCallback(() => setValue(apply), [setValue]);
   return [value, onMutate];
 };
 
+/*
 export const makeArgumentMutation = apply => field => object => {
   const mutation = apply(object);
   return state => ({ [field]: mutation(state[field]) });
@@ -22,19 +26,21 @@ export const makeArgumentHook = (apply, defaultValue) => (initialValue = default
   const onMutate = useCallback(object => setValue(apply(object)), [setValue]);
   return [value, onMutate];
 };
+*/
 
-export const decrementState = value => value - 1;
-export const incrementState = value => value + 1;
-export const toggleState = value => !value;
+export const decrementState = (value: number) => value - 1;
+export const incrementState = (value: number) => value + 1;
+export const toggleState = (value: boolean) => !value;
 
-export const decrement = makeStandaloneMutation(decrementState);
-export const increment = makeStandaloneMutation(incrementState);
-export const toggle = makeStandaloneMutation(toggleState);
+export const decrement = makeStandaloneMutation<number>(decrementState);
+export const increment = makeStandaloneMutation<number>(incrementState);
+export const toggle = makeStandaloneMutation<boolean>(toggleState);
 
-export const useDecrement = makeStandaloneHook(decrementState, 0);
-export const useIncrement = makeStandaloneHook(incrementState, 0);
-export const useToggle = makeStandaloneHook(toggleState, true);
+export const useDecrement = makeStandaloneHook<number>(decrementState, 0);
+export const useIncrement = makeStandaloneHook<number>(incrementState, 0);
+export const useToggle = makeStandaloneHook<boolean>(toggleState, true);
 
+/*
 export const appendState = object => value => value.concat(object);
 export const concatState = object => value => value.concat(object);
 export const cycleState = object => value => object[(object.indexOf(value) + 1) % object.length];
@@ -50,7 +56,7 @@ export const cycle = makeArgumentMutation(cycleState);
 export const direct = makeArgumentMutation(directState);
 export const filter = makeArgumentMutation(filterState);
 export const map = makeArgumentMutation(mapState);
-export const mutate = makeArgumentMutation(mutateState);
+export const mutate = makeArgumentMutation<T>(mutateState);
 export const prepend = makeArgumentMutation(prependState);
 
 export const useAppend = makeArgumentHook(appendState, []);
@@ -99,3 +105,4 @@ export const combineMutations = (...mutations) => {
     ...mutation(nextState)
   }), state);
 };
+*/
