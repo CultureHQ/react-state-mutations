@@ -216,6 +216,16 @@ const Students = () => {
 };
 ```
 
+With TypeScript, `append`, `appendState`, and `useAppend` all accept an additional type argument for specifying which type the array will hold, as in:
+
+```typescript
+interface Student {
+  name: string;
+}
+
+append<Student>("students");
+```
+
 ### `concat`
 
 Concatentate two lists, as in the example:
@@ -256,6 +266,16 @@ const Students = () => {
   // sometime later...
   onConcat([{ name: "Ron" }, { name: "Ginny" }]);
 };
+```
+
+With TypeScript, `concat`, `concatState`, and `useConcat` all accept an additional type argument for specifying which type the array will hold, as in:
+
+```typescript
+interface Student {
+  name: string;
+}
+
+concat<Student>("students");
 ```
 
 ### `cycle`
@@ -331,6 +351,14 @@ const HogwartsHouses = () => {
 };
 ```
 
+With TypeScript, `cycle`, `cycleState`, and `useCycle` all accept an additional type argument for specifying which type the array will hold, as in:
+
+```typescript
+type House = string;
+
+cycle<House>("house");
+```
+
 ### `decrement`
 
 Decrements a value, as in the example:
@@ -368,6 +396,8 @@ const Horcruxes = () => {
 };
 ```
 
+With TypeScript, `decrement`, `decrementState`, and `useDecrement` enforce the `number` type on arguments.
+
 ### `direct`
 
 Directly modifies a value. This is mainly valuable when used with `combineMutations`, as otherwise you could just pass the value to `setState` as normal. The code below uses `combineMutations` with others as an example:
@@ -394,6 +424,8 @@ const prevState = null;
 const nextState = getCake(prevState);
 // => "cake"
 ```
+
+With TypeScript, `direct` and `directState` each accept an additional type argument for specifying which type of object will be assigned into the state.
 
 ### `filter`
 
@@ -451,6 +483,17 @@ const Students = () => {
 };
 ```
 
+With TypeScript, `filter`, `filterState`, and `useFilter` all accept an additional type argument `T` for specifying which type the array will hold. Additionally the filter function argument is enforced to be of the type `((value: T) => boolean)`, as in:
+
+```typescript
+interface Student {
+  name: string;
+  house: string;
+}
+
+filterState<Student>(({ house }) => house === "Gryffindor");
+```
+
 ### `increment`
 
 Increments a value, as in the example:
@@ -487,6 +530,8 @@ const Nimbus = () => {
   onIncrement();
 };
 ```
+
+With TypeScript, `increment`, `incrementState`, and `useDecrement` enforce the `number` type on arguments.
 
 ### `map`
 
@@ -545,6 +590,17 @@ const Students = () => {
 };
 ```
 
+With TypeScript, `map`, `mapState`, and `useMap` all accept an additional type argument `T` for specifying which type the array will hold. Additionally the map function argument is enforced to be of the type `((value: T) => T)`, as in:
+
+```typescript
+interface Student {
+  name: string;
+  year: number;
+}
+
+mapState<Student>(({ year, ...rest }) => ({ year + 1, ...rest }));
+```
+
 ### `mutate`
 
 Mutates a value, as in the example:
@@ -571,6 +627,8 @@ const prevState = { status: "Man", role: "Professor" };
 const nextState = fullMoon(prevState);
 // => { status: "Wolf", role: "Professor" }
 ```
+
+With TypeScript, the object being used to mutate is enforced to be of type `object`.
 
 ### `prepend`
 
@@ -612,6 +670,16 @@ const Students = () => {
 };
 ```
 
+With TypeScript, `prepend`, `prependState`, and `usePrepend` all accept an additional type argument for specifying which type the array will hold, as in:
+
+```typescript
+interface Student {
+  name: string;
+}
+
+prepend<Student>("students");
+```
+
 ### `toggle`
 
 Toggles a boolean value, as in the example:
@@ -649,6 +717,8 @@ const WizardStatus = () => {
 };
 ```
 
+With TypeScript, `toggle`, `toggleState`, and `useToggle` enforce the `boolean` type on arguments.
+
 ## Advanced
 
 There are a couple of advanced functions, for creating your own mutations, combining multiple mutations into one function, and creating your own hooks.
@@ -660,18 +730,23 @@ Creates a mutation that modifies state. Takes as an argument a function that acc
 ```javascript
 import { makeStandaloneMutation } from "react-state-mutations";
 
-const encrypt = makeStandaloneMutation(value =>
-  value
-    .split("")
-    .reverse()
-    .join("")
-);
+const encrypt = makeStandaloneMutation(value => (
+  value.split("").reverse().join("")
+));
 
 const encryptName = encrypt("name");
 
 const prevState = { name: "Harry" };
 const nextState = encryptName(prevState);
 // => { name: "yrraH" }
+```
+
+With Typescript, `makeStandaloneMutation` accepts an additional type argument for specifying which type of value will be mutated. For example:
+
+```typescript
+const encrypt = makeStandaloneMutation<string>(value => (
+  value.split("").reverse().join("")
+));
 ```
 
 ### `makeArgumentMutation`
@@ -687,6 +762,14 @@ const flyUp100Feet = add("currentHeight")(100);
 const prevState = { currentHeight: 0 };
 const nextState = flyUp100Feet(prevState);
 // => { currentHeight: 100 }
+```
+
+With TypeScript, `makeArgumentMutation` accepts two type arguments, for specifying which type of value will be mutated and for specifying the type of the argument to be passed in. For example:
+
+```typescript
+const add = makeArgumentMutation<number, number>(increment => (
+  value => value + increment
+));
 ```
 
 ### `combineMutations`
@@ -770,6 +853,12 @@ const DoubleDouble = () => {
 
 You can also pass a value to `useDouble` in this example to start at a certain value.
 
+With TypeScript, `makeStandaloneHook` accepts an additional type argument for specifying which kind of value will be stored in state. For example,
+
+```typescript
+const useDouble = makeStandaloneHook<number>(value => value * 2, 1);
+```
+
 ### `makeArgumentHook`
 
 Creates a reusable hook based on a mutation that requires one argument. `makeArgumentHook` takes two arguments (the same as `makeStandaloneHook`), the first behind the mutation and the second being the default initial value. For example, if you wanted to create a hook that would count up values in succession, you could:
@@ -801,6 +890,14 @@ const Sum = () => {
     </>
   );
 };
+```
+
+With TypeScript, `makeArgumentHook` accepts two additional type arguments for specifying which kind of value will be stored in state, and which kind of value will be accepted as an argument. For example,
+
+```typescript
+const useAdder = makeArgumentHook<number, number>(
+  object => value => value + object, 0
+);
 ```
 
 ## Contributing
