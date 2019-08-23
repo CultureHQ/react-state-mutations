@@ -5,8 +5,9 @@
   "main": "dist/mutations.js",
   "types": "dist/mutations.d.ts",
   "scripts": {
-    "lint": "chq-scripts lint",
-    "prepublishOnly": "rm -rf dist && mkdir dist && yarn babel --out-file dist/main.js --ignore '**/__tests__' src",
+    "build": "tsc",
+    "lint": "eslint --ext .ts --ignore-pattern /dist/* .",
+    "prepublishOnly": "rm -rf dist && yarn build --declaration",
     "test": "chq-scripts test"
   },
   "repository": {
@@ -31,6 +32,8 @@
     "@testing-library/react-hooks": "^2.0.1",
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "react": "^16.9.0",
     "react-test-renderer": "^16.9.0",
     "typescript": "^3.5.3"
@@ -38,6 +41,30 @@
   "resolutions": {
     "@babel/core": "^7.5.5",
     "@types/react": "^16.9.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@culturehq",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": ["error", {
+        "allowExpressions": true,
+        "allowHigherOrderFunctions": true
+      }],
+      "@typescript-eslint/no-explicit-any": "off"
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".ts"]
+        }
+      }
+    }
   },
   "jest": {
     "testRegex": "\\.test\\.(j|t)sx?$"
