@@ -21,7 +21,7 @@ import {
 
 describe("factories", () => {
   test("makeStandaloneMutation", () => {
-    const mutation = makeStandaloneMutation(value => value + 50)("object");
+    const mutation = makeStandaloneMutation<number>(value => value + 50)("object");
     const prevState = { object: 1 };
     const nextState = mutation(prevState);
 
@@ -30,7 +30,7 @@ describe("factories", () => {
   });
 
   test("makeArgumentMutation", () => {
-    const mutation = makeArgumentMutation(object => value => value + object)("object")(50);
+    const mutation = makeArgumentMutation<number, number>(object => value => value + object)("object")(50);
     const prevState = { object: 1 };
     const nextState = mutation(prevState);
 
@@ -39,7 +39,7 @@ describe("factories", () => {
   });
 
   test("makeStandaloneHook", () => {
-    const useDouble = makeStandaloneHook(value => value * 2);
+    const useDouble = makeStandaloneHook<number>(value => value * 2);
 
     let count;
     let onDouble;
@@ -58,7 +58,7 @@ describe("factories", () => {
   });
 
   test("makeArgumentHook", () => {
-    const useAddHook = makeArgumentHook(object => value => value + object);
+    const useAddHook = makeArgumentHook<number, number>(object => value => value + object);
 
     let count;
     let onAdd;
@@ -79,7 +79,7 @@ describe("factories", () => {
 
 describe("appending", () => {
   test("append", () => {
-    const mutation = append("objects")(4);
+    const mutation = append<number>("objects")(4);
     const prevState = { objects: [1, 2, 3] };
     const nextState = mutation(prevState);
 
@@ -92,7 +92,7 @@ describe("appending", () => {
     let onAppend;
 
     renderHook(() => {
-      ([value, onAppend] = useAppend([1]));
+      ([value, onAppend] = useAppend<number>([1]));
     });
 
     expect(value).toEqual([1]);
@@ -107,7 +107,7 @@ describe("appending", () => {
 
 describe("concat-ing", () => {
   test("concat", () => {
-    const mutation = concat("objects")([4, 5, 6]);
+    const mutation = concat<number>("objects")([4, 5, 6]);
     const prevState = { objects: [1, 2, 3] };
     const nextState = mutation(prevState);
 
@@ -121,7 +121,7 @@ describe("concat-ing", () => {
     let onConcat;
 
     renderHook(() => {
-      ([value, onConcat] = useConcat([1]));
+      ([value, onConcat] = useConcat<number>([1]));
     });
 
     expect(value).toEqual([1]);
@@ -136,7 +136,7 @@ describe("concat-ing", () => {
 
 describe("prepending", () => {
   test("prepend", () => {
-    const mutation = prepend("objects")(0);
+    const mutation = prepend<number>("objects")(0);
     const prevState = { objects: [1, 2, 3] };
     const nextState = mutation(prevState);
 
@@ -149,7 +149,7 @@ describe("prepending", () => {
     let onPrepend;
 
     renderHook(() => {
-      ([value, onPrepend] = usePrepend([3]));
+      ([value, onPrepend] = usePrepend<number>([3]));
     });
 
     expect(value).toEqual([3]);
@@ -164,7 +164,7 @@ describe("prepending", () => {
 
 describe("cycling", () => {
   test("cycle", () => {
-    const mutation = cycle("object")(["foo", "bar", "baz"]);
+    const mutation = cycle<string>("object")(["foo", "bar", "baz"]);
     const prevState = { object: "foo" };
 
     let nextState = mutation(prevState);
@@ -183,7 +183,7 @@ describe("cycling", () => {
     let onCycle;
 
     renderHook(() => {
-      ([value, onCycle] = useCycle([1, 2, 3]));
+      ([value, onCycle] = useCycle<number>([1, 2, 3]));
     });
 
     expect(value).toEqual(1);
@@ -315,7 +315,7 @@ describe("toggling", () => {
 
 describe("filtering", () => {
   test("filter", () => {
-    const mutation = filter("objects")(value => value % 2 === 0);
+    const mutation = filter<number>("objects")(value => value % 2 === 0);
     const prevState = { objects: [1, 2, 3, 4, 5, 6] };
     const nextState = mutation(prevState);
 
@@ -328,7 +328,7 @@ describe("filtering", () => {
     let onFilter;
 
     renderHook(() => {
-      ([value, onFilter] = useFilter([1, 2, 3, 4, 5, 6, 7, 8]));
+      ([value, onFilter] = useFilter<number>([1, 2, 3, 4, 5, 6, 7, 8]));
     });
 
     expect(value).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
@@ -344,7 +344,7 @@ describe("filtering", () => {
     let count;
 
     renderHook(() => {
-      ([count] = useFilter());
+      ([count] = useFilter<number>());
     });
 
     expect(count).toEqual([]);
@@ -353,7 +353,7 @@ describe("filtering", () => {
 
 describe("mapping", () => {
   test("map", () => {
-    const mutation = map("objects")(value => value * 2);
+    const mutation = map<number>("objects")(value => value * 2);
     const prevState = { objects: [1, 2, 3] };
     const nextState = mutation(prevState);
 
@@ -366,7 +366,7 @@ describe("mapping", () => {
     let onMap;
 
     renderHook(() => {
-      ([value, onMap] = useMap([1, 2, 3]));
+      ([value, onMap] = useMap<number>([1, 2, 3]));
     });
 
     expect(value).toEqual([1, 2, 3]);
@@ -382,7 +382,7 @@ describe("mapping", () => {
     let count;
 
     renderHook(() => {
-      ([count] = useMap());
+      ([count] = useMap<number>());
     });
 
     expect(count).toEqual([]);
@@ -391,7 +391,7 @@ describe("mapping", () => {
 
 describe("other mutations", () => {
   test("direct", () => {
-    const mutation = direct("object")("bar");
+    const mutation = direct<string>("object")("bar");
     const prevState = { object: "foo" };
     const nextState = mutation(prevState);
 
@@ -412,11 +412,11 @@ describe("other mutations", () => {
 describe("combineMutations", () => {
   test("basic", () => {
     const mutation = combineMutations(
-      append("appendable"),
+      append<number>("appendable"),
       decrement("decrementable"),
       increment("incrementable"),
       mutate("mutatable"),
-      prepend("prependable"),
+      prepend<number>("prependable"),
       toggle("toggleable")
     );
 
@@ -461,7 +461,7 @@ describe("combineMutations", () => {
 
   test("with plain objects", () => {
     const mutation = combineMutations(
-      append("appendable"),
+      append<number>("appendable"),
       { a: "a" },
       toggle("toggleable"),
       { b: "b", c: "c" }
@@ -510,7 +510,7 @@ describe("combineMutations", () => {
   });
 
   test("with arguments works when called multiple times", () => {
-    const mutation = combineMutations(append("appendable"), { a: "b" })(1);
+    const mutation = combineMutations(append<number>("appendable"), { a: "b" })(1);
 
     const prevState = { appendable: [1], a: "a" };
     const nextState = mutation(prevState);
