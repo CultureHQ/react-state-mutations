@@ -136,15 +136,38 @@ export default Counter;
 You can alternatively use this library in conjunction with the `useState` feature in React. To get the equivalent as the above example working, you can use:
 
 ```javascript
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import { incrementState } from "react-state-mutations";
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-  const onClick = useCallback(() => {
+  const onClick = () => {
     setCount(incrementState);
     setCount(incrementState);
-  });
+  };
+
+  return (
+    <button type="button" onClick={onClick}>
+      {count}
+    </button>
+  );
+};
+
+export default Counter;
+```
+
+Or, you could use the built in `useIncrement` hook, as in:
+
+```javascript
+import React from "react";
+import { useIncrement } from "react-state-mutations";
+
+const Counter = () => {
+  const [count, onIncrement] = useIncrement(0);
+  const onClick = () => {
+    onIncrement();
+    onIncrement();
+  };
 
   return (
     <button type="button" onClick={onClick}>
