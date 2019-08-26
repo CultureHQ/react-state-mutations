@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es5"
+  },
+  "include": ["src"],
+  "exclude": ["**/__tests__/*"]
+}
