@@ -84,7 +84,7 @@ describe("appending", () => {
     const nextState = mutation(prevState);
 
     expect(nextState.objects[nextState.objects.length - 1]).toEqual(4);
-    expect(prevState.objects.length).toEqual(3);
+    expect(prevState.objects).toHaveLength(3);
   });
 
   test("useAppend", () => {
@@ -111,9 +111,9 @@ describe("concat-ing", () => {
     const prevState = { objects: [1, 2, 3] };
     const nextState = mutation(prevState);
 
-    expect(nextState.objects.length).toEqual(6);
+    expect(nextState.objects).toHaveLength(6);
     expect(nextState.objects[nextState.objects.length - 1]).toEqual(6);
-    expect(prevState.objects.length).toEqual(3);
+    expect(prevState.objects).toHaveLength(3);
   });
 
   test("useConcat", () => {
@@ -141,7 +141,7 @@ describe("prepending", () => {
     const nextState = mutation(prevState);
 
     expect(nextState.objects[0]).toEqual(0);
-    expect(prevState.objects.length).toEqual(3);
+    expect(prevState.objects).toHaveLength(3);
   });
 
   test("usePrepend", () => {
