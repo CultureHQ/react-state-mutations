@@ -6,10 +6,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [2.0.0] - 2019-09-23
+
+### Added
+
+- Switch to TypeScript and add type definitions to final bundle.
+
 ### Changed
 
 - Use `Array.prototype.concat` instead of array spread so that babel will inject fewer helpers into the final bundle
 - Dropped the `react-dom` dependency because we don't technically need it.
+
+### Removed
+
+- Drop `module` build.
 
 ## [1.1.2] - 2019-06-07
 
@@ -108,7 +118,8 @@ const StudentList = () => {
 
 - The `filter` mutation for filtering a list of objects.
 
-[unreleased]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.2...HEAD
+[unreleased]: https://github.com/CultureHQ/react-state-mutations/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.2...v2.0.0
 [1.1.2]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/CultureHQ/react-state-mutations/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/CultureHQ/react-state-mutations/compare/v1.0.0...v1.1.0
