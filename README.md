@@ -1,6 +1,6 @@
 # react-state-mutations
 
-[![Build Status](https://github.com/CultureHQ/react-state-mutations/workflows/Push/badge.svg)](https://github.com/CultureHQ/react-state-mutations/actions)
+[![Build Status](https://github.com/CultureHQ/react-state-mutations/workflows/Main/badge.svg)](https://github.com/CultureHQ/react-state-mutations/actions)
 [![Package Version](https://img.shields.io/npm/v/react-state-mutations.svg)](https://www.npmjs.com/package/react-state-mutations)
 
 State updates in `React` [may be asynchronous](https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous). In the case that you're using the previous state to calculate the next state, you could run into race conditions when `React` attempts to batch your state changes together. The following example demonstrates the problem:
